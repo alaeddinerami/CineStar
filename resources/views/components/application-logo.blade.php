@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs"
-    version="1.1" viewBox="0 0 1500 352">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" version="1.1" viewBox="0 0 1500 352" {{ $attributes }}>
     <g transform="matrix(1,0,0,1,-0.9090909090909918,-0.2410079300565542)"><svg xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 396 93" data-background-color="#f2f0e4"
             preserveAspectRatio="xMidYMid meet" height="352" width="1500">
