@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->boolean('refunded')->default(false);
-            $table->foreignId('seat_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('film_hall_id')->constrained('film_hall');
+            $table->longText('message');
+            $table->boolean('notification')->default(true);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('notifications');
     }
 };
