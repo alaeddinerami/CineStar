@@ -12,7 +12,7 @@ class HallController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.halls.index');
     }
 
     /**

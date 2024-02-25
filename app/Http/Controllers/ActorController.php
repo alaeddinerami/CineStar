@@ -12,7 +12,7 @@ class ActorController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.actors.index');
     }
 
     /**

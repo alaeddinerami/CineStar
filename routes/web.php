@@ -6,6 +6,7 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HallController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ScreeningController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,32 +19,34 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::middleware('role:admin')->group(function () {
     Route::get('/dashboard', [ReservationController::class, 'index'])->name('dashboard');
 
     Route::get('/dashboard/actors', [ActorController::class, 'index'])->name('actor.index');
-    Route::get('/dashboard/actors/edit/{actor}', [ActorController::class, 'edit'])->name('actor.edit');
-    Route::patch('/dashboard/actors/edit/{actor}', [ActorController::class, 'update'])->name('actor.update');
     Route::post('/dashboard/actors', [ActorController::class, 'store'])->name('actor.store');
+    Route::patch('/dashboard/actors/edit/{actor}', [ActorController::class, 'update'])->name('actor.update');
     Route::delete('/dashboard/actors/delete/{actor}', [ActorController::class, 'delete'])->name('actor.delete');
-  
+
     Route::get('/dashboard/genres', [GenreController::class, 'index'])->name('genre.index');
-    Route::get('/dashboard/genres/edit/{genre}', [GenreController::class, 'edit'])->name('genre.edit');
-    Route::patch('/dashboard/genres/edit/{genre}', [GenreController::class, 'update'])->name('genre.update');
     Route::post('/dashboard/genres', [GenreController::class, 'store'])->name('genre.store');
+    Route::patch('/dashboard/genres/edit/{genre}', [GenreController::class, 'update'])->name('genre.update');
     Route::delete('/dashboard/genres/delete/{genre}', [GenreController::class, 'delete'])->name('genre.delete');
-    
+
     Route::get('/dashboard/films', [FilmController::class, 'index'])->name('film.index');
-    Route::get('/dashboard/films/edit/{film}', [FilmController::class, 'edit'])->name('film.edit');
-    Route::patch('/dashboard/films/edit/{film}', [FilmController::class, 'update'])->name('film.update');
     Route::post('/dashboard/films', [FilmController::class, 'store'])->name('film.store');
+    Route::patch('/dashboard/films/edit/{film}', [FilmController::class, 'update'])->name('film.update');
     Route::delete('/dashboard/films/delete/{film}', [FilmController::class, 'delete'])->name('film.delete');
-    
+
     Route::get('/dashboard/halls', [HallController::class, 'index'])->name('hall.index');
-    Route::get('/dashboard/halls/edit/{hall}', [HallController::class, 'edit'])->name('hall.edit');
-    Route::patch('/dashboard/halls/edit/{hall}', [HallController::class, 'update'])->name('hall.update');
     Route::post('/dashboard/halls', [HallController::class, 'store'])->name('hall.store');
+    Route::patch('/dashboard/halls/edit/{hall}', [HallController::class, 'update'])->name('hall.update');
     Route::delete('/dashboard/halls/delete/{hall}', [HallController::class, 'delete'])->name('hall.delete');
+
+    Route::get('/dashboard/screenings', [ScreeningController::class, 'index'])->name('screening.index');
+    Route::post('/dashboard/screenings', [ScreeningController::class, 'store'])->name('screening.store');
+    Route::patch('/dashboard/screenings/edit/{screening}', [ScreeningController::class, 'update'])->name('screening.update');
+    Route::delete('/dashboard/screenings/delete/{screening}', [ScreeningController::class, 'delete'])->name('screening.delete');
 });
 
 Route::get('/', function () {

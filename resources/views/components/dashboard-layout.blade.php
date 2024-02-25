@@ -14,6 +14,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -93,11 +94,11 @@
                     <ul class="flex flex-col py-4 space-y-1">
                         <li class="px-5 hidden md:block">
                             <div class="flex flex-row items-center h-8">
-                                <div class="text-sm font-light tracking-wide text-gray-400 uppercase">Main</div>
+                                <div class="text-sm font-light tracking-wide text-white uppercase"></div>
                             </div>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('dashboard') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
                                 <span class="inline-flex justify-center items-center ml-4">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -110,231 +111,243 @@
                                 <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
                             </a>
                         </li>
+                        <li class="px-5 hidden md:block ">
+                            <hr class="border-[1.2px] rounded-full">
+                        </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('actor.index') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
                                 <span class="inline-flex justify-center items-center ml-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#ffffff" version="1.1" id="Capa_1" class="w-5 h-5" viewBox="0 0 800 800" xml:space="preserve">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        fill="#ffffff" version="1.1" id="Capa_1" class="w-5 h-5"
+                                        viewBox="0 0 800 800" xml:space="preserve">
                                         <g>
-                                            <path d="M290.973,331.347c0-55.45,44.987-100.406,100.499-100.406c55.534,0,100.586,44.957,100.586,100.406   c0,55.513-45.053,100.407-100.586,100.407C335.959,431.754,290.973,386.859,290.973,331.347z M800,111.167   c0,24.191-24.697,43.794-55.989,45.69V775H46.723V155.866C19.944,151.084,0,132.946,0,111.167c0-25.42,27.149-46.013,60.678-46.013   h260.588V25H486.35v40.154h252.93C772.808,65.154,800,85.748,800,111.167z M305.491,555.059   c-24.328,33.109-39.367,88.149-43.88,161.479h36.285C300.716,652.169,303.733,589.827,305.491,555.059z M488.673,716.536h30.251   c-2.258-73.286-16.516-128.11-41.472-161.436C480.664,594.479,485.895,661.646,488.673,716.536z M685.005,157.246H105.729v559.291   h84.788c6.206-111.716,33.181-187.521,82.703-231.296c10.157-9.003,20.877-17.233,32.531-24.019   c6.641-3.898,13.693-7.044,20.941-9.606c17.751-6.334,36.609-9.308,55.426-9.954l-32.509,272.505l2.321,2.37h75.935l1.996-2.37   L403.93,442.05c17.208,1.186,34.439,4.31,50.803,9.952c17.577,6.117,32.746,15.791,47.373,27.122   c55.145,42.631,84.614,122.615,87.782,237.412h95.117V157.246z"/>
+                                            <path
+                                                d="M290.973,331.347c0-55.45,44.987-100.406,100.499-100.406c55.534,0,100.586,44.957,100.586,100.406   c0,55.513-45.053,100.407-100.586,100.407C335.959,431.754,290.973,386.859,290.973,331.347z M800,111.167   c0,24.191-24.697,43.794-55.989,45.69V775H46.723V155.866C19.944,151.084,0,132.946,0,111.167c0-25.42,27.149-46.013,60.678-46.013   h260.588V25H486.35v40.154h252.93C772.808,65.154,800,85.748,800,111.167z M305.491,555.059   c-24.328,33.109-39.367,88.149-43.88,161.479h36.285C300.716,652.169,303.733,589.827,305.491,555.059z M488.673,716.536h30.251   c-2.258-73.286-16.516-128.11-41.472-161.436C480.664,594.479,485.895,661.646,488.673,716.536z M685.005,157.246H105.729v559.291   h84.788c6.206-111.716,33.181-187.521,82.703-231.296c10.157-9.003,20.877-17.233,32.531-24.019   c6.641-3.898,13.693-7.044,20.941-9.606c17.751-6.334,36.609-9.308,55.426-9.954l-32.509,272.505l2.321,2.37h75.935l1.996-2.37   L403.93,442.05c17.208,1.186,34.439,4.31,50.803,9.952c17.577,6.117,32.746,15.791,47.373,27.122   c55.145,42.631,84.614,122.615,87.782,237.412h95.117V157.246z" />
                                         </g>
-                                        </svg>
+                                    </svg>
                                 </span>
                                 <span class="ml-2 text-sm tracking-wide truncate">Actors</span>
 
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('genre.index') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
                                 <span class="inline-flex justify-center items-center ml-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:serif="http://www.serif.com/" fill="#ffffff" class="w-5 h-5" viewBox="0 0 64 64" version="1.1" xml:space="preserve" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        xmlns:serif="http://www.serif.com/" fill="#ffffff" class="w-5 h-5"
+                                        viewBox="0 0 64 64" version="1.1" xml:space="preserve"
+                                        style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
 
-                                        <rect id="Icons" x="-384" y="-320" width="1280" height="800" style="fill:none;"/>
-                                        
+                                        <rect id="Icons" x="-384" y="-320" width="1280" height="800"
+                                            style="fill:none;" />
+
                                         <g id="Icons1" serif:id="Icons">
-                                        
-                                        <g id="Strike">
-                                        
+
+                                            <g id="Strike">
+
+                                            </g>
+
+                                            <g id="H1">
+
+                                            </g>
+
+                                            <g id="H2">
+
+                                            </g>
+
+                                            <g id="H3">
+
+                                            </g>
+
+                                            <g id="list-ul">
+
+                                            </g>
+
+                                            <g id="hamburger-1">
+
+                                            </g>
+
+                                            <g id="hamburger-2">
+
+                                            </g>
+
+                                            <g id="list-ol">
+
+                                            </g>
+
+                                            <g id="list-task">
+
+                                            </g>
+
+                                            <g id="trash">
+
+                                            </g>
+
+                                            <g id="vertical-menu">
+
+                                            </g>
+
+                                            <g id="horizontal-menu">
+
+                                            </g>
+
+                                            <g id="sidebar-2">
+
+                                            </g>
+
+                                            <g id="Pen">
+
+                                            </g>
+
+                                            <g id="Pen1" serif:id="Pen">
+
+                                            </g>
+
+                                            <g id="clock">
+
+                                            </g>
+
+                                            <g id="external-link">
+
+                                            </g>
+
+                                            <g id="hr">
+
+                                            </g>
+
+                                            <g id="info">
+
+                                            </g>
+
+                                            <g id="warning">
+
+                                            </g>
+
+                                            <g id="plus-circle">
+
+                                            </g>
+
+                                            <g id="minus-circle">
+
+                                            </g>
+
+                                            <g id="vue">
+
+                                            </g>
+
+                                            <g id="cog">
+
+                                            </g>
+
+                                            <g id="logo">
+
+                                            </g>
+
+                                            <g id="radio-check">
+
+                                            </g>
+
+                                            <g id="eye-slash">
+
+                                            </g>
+
+                                            <g id="eye">
+
+                                            </g>
+
+                                            <g id="toggle-off">
+
+                                            </g>
+
+                                            <g id="shredder">
+
+                                            </g>
+
+                                            <g>
+
+                                                <path
+                                                    d="M9.89,30.496c-1.14,1.122 -1.784,2.653 -1.791,4.252c-0.006,1.599 0.627,3.135 1.758,4.266c3.028,3.028 7.071,7.071 10.081,10.082c2.327,2.326 6.093,2.349 8.448,0.051c5.91,-5.768 16.235,-15.846 19.334,-18.871c0.578,-0.564 0.905,-1.338 0.905,-2.146c0,-4.228 0,-17.607 0,-17.607l-17.22,0c-0.788,0 -1.544,0.309 -2.105,0.862c-3.065,3.018 -13.447,13.239 -19.41,19.111Zm34.735,-15.973l0,11.945c0,0.811 -0.329,1.587 -0.91,2.152c-3.069,2.981 -13.093,12.718 -17.485,16.984c-1.161,1.127 -3.012,1.114 -4.157,-0.031c-2.387,-2.386 -6.296,-6.296 -8.709,-8.709c-0.562,-0.562 -0.876,-1.325 -0.872,-2.12c0.003,-0.795 0.324,-1.555 0.892,-2.112c4.455,-4.373 14.545,-14.278 17.573,-17.25c0.561,-0.551 1.316,-0.859 2.102,-0.859c3.202,0 11.566,0 11.566,0Zm-7.907,2.462c-1.751,0.015 -3.45,1.017 -4.266,2.553c-0.708,1.331 -0.75,2.987 -0.118,4.356c0.836,1.812 2.851,3.021 4.882,2.809c2.042,-0.212 3.899,-1.835 4.304,-3.896c0.296,-1.503 -0.162,-3.136 -1.213,-4.251c-0.899,-0.953 -2.18,-1.548 -3.495,-1.57c-0.031,-0.001 -0.062,-0.001 -0.094,-0.001Zm0.008,2.519c1.105,0.007 2.142,0.849 2.343,1.961c0.069,0.384 0.043,0.786 -0.09,1.154c-0.393,1.079 -1.62,1.811 -2.764,1.536c-1.139,-0.274 -1.997,-1.489 -1.802,-2.67c0.177,-1.069 1.146,-1.963 2.27,-1.981c0.014,0 0.029,0 0.043,0Z" />
+
+                                                <path
+                                                    d="M48.625,13.137l0,4.001l3.362,0l0,11.945c0,0.811 -0.328,1.587 -0.909,2.152c-3.069,2.981 -13.093,12.717 -17.485,16.983c-1.161,1.128 -3.013,1.114 -4.157,-0.03l-0.034,-0.034l-1.016,0.993c-0.663,0.646 -1.437,1.109 -2.259,1.389l1.174,1.174c2.327,2.327 6.093,2.35 8.447,0.051c5.91,-5.768 16.235,-15.845 19.335,-18.87c0.578,-0.565 0.904,-1.339 0.904,-2.147c0,-4.227 0,-17.607 0,-17.607l-7.362,0Z" />
+
+                                            </g>
+
+                                            <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]">
+
+                                            </g>
+
+                                            <g id="react">
+
+                                            </g>
+
+                                            <g id="check-selected">
+
+                                            </g>
+
+                                            <g id="turn-off">
+
+                                            </g>
+
+                                            <g id="code-block">
+
+                                            </g>
+
+                                            <g id="user">
+
+                                            </g>
+
+                                            <g id="coffee-bean">
+
+                                            </g>
+
+                                            <g id="coffee-beans">
+
+                                                <g id="coffee-bean1" serif:id="coffee-bean">
+
+                                                </g>
+
+                                            </g>
+
+                                            <g id="coffee-bean-filled">
+
+                                            </g>
+
+                                            <g id="coffee-beans-filled">
+
+                                                <g id="coffee-bean2" serif:id="coffee-bean">
+
+                                                </g>
+
+                                            </g>
+
+                                            <g id="clipboard">
+
+                                            </g>
+
+                                            <g id="clipboard-paste">
+
+                                            </g>
+
+                                            <g id="clipboard-copy">
+
+                                            </g>
+
+                                            <g id="Layer1">
+
+                                            </g>
+
                                         </g>
-                                        
-                                        <g id="H1">
-                                        
-                                        </g>
-                                        
-                                        <g id="H2">
-                                        
-                                        </g>
-                                        
-                                        <g id="H3">
-                                        
-                                        </g>
-                                        
-                                        <g id="list-ul">
-                                        
-                                        </g>
-                                        
-                                        <g id="hamburger-1">
-                                        
-                                        </g>
-                                        
-                                        <g id="hamburger-2">
-                                        
-                                        </g>
-                                        
-                                        <g id="list-ol">
-                                        
-                                        </g>
-                                        
-                                        <g id="list-task">
-                                        
-                                        </g>
-                                        
-                                        <g id="trash">
-                                        
-                                        </g>
-                                        
-                                        <g id="vertical-menu">
-                                        
-                                        </g>
-                                        
-                                        <g id="horizontal-menu">
-                                        
-                                        </g>
-                                        
-                                        <g id="sidebar-2">
-                                        
-                                        </g>
-                                        
-                                        <g id="Pen">
-                                        
-                                        </g>
-                                        
-                                        <g id="Pen1" serif:id="Pen">
-                                        
-                                        </g>
-                                        
-                                        <g id="clock">
-                                        
-                                        </g>
-                                        
-                                        <g id="external-link">
-                                        
-                                        </g>
-                                        
-                                        <g id="hr">
-                                        
-                                        </g>
-                                        
-                                        <g id="info">
-                                        
-                                        </g>
-                                        
-                                        <g id="warning">
-                                        
-                                        </g>
-                                        
-                                        <g id="plus-circle">
-                                        
-                                        </g>
-                                        
-                                        <g id="minus-circle">
-                                        
-                                        </g>
-                                        
-                                        <g id="vue">
-                                        
-                                        </g>
-                                        
-                                        <g id="cog">
-                                        
-                                        </g>
-                                        
-                                        <g id="logo">
-                                        
-                                        </g>
-                                        
-                                        <g id="radio-check">
-                                        
-                                        </g>
-                                        
-                                        <g id="eye-slash">
-                                        
-                                        </g>
-                                        
-                                        <g id="eye">
-                                        
-                                        </g>
-                                        
-                                        <g id="toggle-off">
-                                        
-                                        </g>
-                                        
-                                        <g id="shredder">
-                                        
-                                        </g>
-                                        
-                                        <g>
-                                        
-                                        <path d="M9.89,30.496c-1.14,1.122 -1.784,2.653 -1.791,4.252c-0.006,1.599 0.627,3.135 1.758,4.266c3.028,3.028 7.071,7.071 10.081,10.082c2.327,2.326 6.093,2.349 8.448,0.051c5.91,-5.768 16.235,-15.846 19.334,-18.871c0.578,-0.564 0.905,-1.338 0.905,-2.146c0,-4.228 0,-17.607 0,-17.607l-17.22,0c-0.788,0 -1.544,0.309 -2.105,0.862c-3.065,3.018 -13.447,13.239 -19.41,19.111Zm34.735,-15.973l0,11.945c0,0.811 -0.329,1.587 -0.91,2.152c-3.069,2.981 -13.093,12.718 -17.485,16.984c-1.161,1.127 -3.012,1.114 -4.157,-0.031c-2.387,-2.386 -6.296,-6.296 -8.709,-8.709c-0.562,-0.562 -0.876,-1.325 -0.872,-2.12c0.003,-0.795 0.324,-1.555 0.892,-2.112c4.455,-4.373 14.545,-14.278 17.573,-17.25c0.561,-0.551 1.316,-0.859 2.102,-0.859c3.202,0 11.566,0 11.566,0Zm-7.907,2.462c-1.751,0.015 -3.45,1.017 -4.266,2.553c-0.708,1.331 -0.75,2.987 -0.118,4.356c0.836,1.812 2.851,3.021 4.882,2.809c2.042,-0.212 3.899,-1.835 4.304,-3.896c0.296,-1.503 -0.162,-3.136 -1.213,-4.251c-0.899,-0.953 -2.18,-1.548 -3.495,-1.57c-0.031,-0.001 -0.062,-0.001 -0.094,-0.001Zm0.008,2.519c1.105,0.007 2.142,0.849 2.343,1.961c0.069,0.384 0.043,0.786 -0.09,1.154c-0.393,1.079 -1.62,1.811 -2.764,1.536c-1.139,-0.274 -1.997,-1.489 -1.802,-2.67c0.177,-1.069 1.146,-1.963 2.27,-1.981c0.014,0 0.029,0 0.043,0Z"/>
-                                        
-                                        <path d="M48.625,13.137l0,4.001l3.362,0l0,11.945c0,0.811 -0.328,1.587 -0.909,2.152c-3.069,2.981 -13.093,12.717 -17.485,16.983c-1.161,1.128 -3.013,1.114 -4.157,-0.03l-0.034,-0.034l-1.016,0.993c-0.663,0.646 -1.437,1.109 -2.259,1.389l1.174,1.174c2.327,2.327 6.093,2.35 8.447,0.051c5.91,-5.768 16.235,-15.845 19.335,-18.87c0.578,-0.565 0.904,-1.339 0.904,-2.147c0,-4.227 0,-17.607 0,-17.607l-7.362,0Z"/>
-                                        
-                                        </g>
-                                        
-                                        <g id="spinner--loading--dots-" serif:id="spinner [loading, dots]">
-                                        
-                                        </g>
-                                        
-                                        <g id="react">
-                                        
-                                        </g>
-                                        
-                                        <g id="check-selected">
-                                        
-                                        </g>
-                                        
-                                        <g id="turn-off">
-                                        
-                                        </g>
-                                        
-                                        <g id="code-block">
-                                        
-                                        </g>
-                                        
-                                        <g id="user">
-                                        
-                                        </g>
-                                        
-                                        <g id="coffee-bean">
-                                        
-                                        </g>
-                                        
-                                        <g id="coffee-beans">
-                                        
-                                        <g id="coffee-bean1" serif:id="coffee-bean">
-                                        
-                                        </g>
-                                        
-                                        </g>
-                                        
-                                        <g id="coffee-bean-filled">
-                                        
-                                        </g>
-                                        
-                                        <g id="coffee-beans-filled">
-                                        
-                                        <g id="coffee-bean2" serif:id="coffee-bean">
-                                        
-                                        </g>
-                                        
-                                        </g>
-                                        
-                                        <g id="clipboard">
-                                        
-                                        </g>
-                                        
-                                        <g id="clipboard-paste">
-                                        
-                                        </g>
-                                        
-                                        <g id="clipboard-copy">
-                                        
-                                        </g>
-                                        
-                                        <g id="Layer1">
-                                        
-                                        </g>
-                                        
-                                        </g>
-                                        
-                                        </svg>
+
+                                    </svg>
                                 </span>
                                 <span class="ml-2 text-sm tracking-wide truncate">Genres</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('film.index') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
                                 <span class="inline-flex justify-center items-center ml-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -364,7 +377,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"
+                            <a href="{{ route('hall.index') }}"
                                 class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
                                 <span class="inline-flex justify-center items-center ml-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
@@ -403,15 +416,56 @@
 
                             </a>
                         </li>
+                        <li class="px-5 hidden md:block ">
+                            <hr class="border-[1.2px] rounded-full">
+                        </li>
+                        <li>
+                            <a href="{{ route('screening.index') }}"
+                                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                <span class="inline-flex justify-center items-center ml-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+                                        id="Layer_1" data-name="Layer 1">
+                                        <defs>
+                                            <style>
+                                                .cls-1 {
+                                                    fill: none;
+                                                    stroke: #ffffff;
+                                                    stroke-miterlimit: 10;
+                                                    stroke-width: 1.91px;
+                                                }
+                                            </style>
+                                        </defs>
+                                        <path class="cls-1"
+                                            d="M9.14,1.5h5.73a2.86,2.86,0,0,1,2.86,2.86v9.55a0,0,0,0,1,0,0H6.27a0,0,0,0,1,0,0V4.36A2.86,2.86,0,0,1,9.14,1.5Z" />
+                                        <path class="cls-1"
+                                            d="M1.5,10.09H6.27a0,0,0,0,1,0,0v3.34a2.39,2.39,0,0,1-2.39,2.39h0A2.39,2.39,0,0,1,1.5,13.43V10.09A0,0,0,0,1,1.5,10.09Z" />
+                                        <path class="cls-1"
+                                            d="M17.73,10.09H22.5a0,0,0,0,1,0,0v3.34a2.39,2.39,0,0,1-2.39,2.39h0a2.39,2.39,0,0,1-2.39-2.39V10.09A0,0,0,0,1,17.73,10.09Z" />
+                                        <path class="cls-1"
+                                            d="M4.6,15.7h0a2.08,2.08,0,0,0-.23.95,2,2,0,0,0,2,2H17.61a2,2,0,0,0,2-2,2.08,2.08,0,0,0-.23-.95,0,0,0,0,1,0,0" />
+                                        <polyline class="cls-1"
+                                            points="17.79 13.98 17.73 13.91 6.27 13.91 6.21 13.98" />
+                                        <line class="cls-1" x1="7.23" y1="22.5" x2="7.23"
+                                            y2="18.68" />
+                                        <line class="cls-1" x1="16.77" y1="22.5" x2="16.77"
+                                            y2="18.68" />
+                                        <line class="cls-1" x1="5.32" y1="22.5" x2="9.14"
+                                            y2="22.5" />
+                                        <line class="cls-1" x1="14.86" y1="22.5" x2="18.68"
+                                            y2="22.5" />
+                                    </svg>
+                                </span>
+                                <span class="ml-2 text-sm tracking-wide truncate">Screenings</span>
 
-
+                            </a>
+                        </li>
                     </ul>
                     <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs">Copyright @2021</p>
                 </div>
             </div>
             <!-- ./Sidebar -->
 
-            <main>
+            <main class="h-full ml-14 mt-14 mb-10 md:ml-64">
                 {{ $slot }}
             </main>
         </div>
