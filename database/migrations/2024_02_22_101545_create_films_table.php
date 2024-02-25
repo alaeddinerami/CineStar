@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('overview');
-            $table->string('poser_path');
+            // $table->string('poser_path');
             $table->timestamps();
         });
     }
