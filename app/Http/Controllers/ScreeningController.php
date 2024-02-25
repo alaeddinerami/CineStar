@@ -11,26 +11,7 @@ class ScreeningController extends Controller
      */
     public function index()
     {
-        $operationSuccessful = false;
-
-        if ($operationSuccessful) {
-            $message = "Operation was successful.";
-        } else {
-            $message = "There was an error.";
-        }
-
-        return view("dashboard.screenings.index")->with([
-            'message' => $message,
-            'operationSuccessful' => $operationSuccessful,
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view("dashboard.screenings.index");
     }
 
     /**
@@ -38,15 +19,18 @@ class ScreeningController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $operationSuccessful = false;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-        //
+        if ($operationSuccessful) {
+            $message = "Screening reserved successfully!";
+        } else {
+            $message = "You can't reserve another movie on the same time.";
+        }
+
+        return back()->with([
+            'message' => $message,
+            'operationSuccessful' => $operationSuccessful,
+        ]);
     }
 
     /**
@@ -54,7 +38,7 @@ class ScreeningController extends Controller
      */
     public function edit()
     {
-        //
+        return view('dashboard.screenings.edit');
     }
 
     /**

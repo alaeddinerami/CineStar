@@ -10,47 +10,63 @@
             })
         </script>
     @endisset
-    <div id="editModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="p-6">
-                    <h2 class="text-lg font-semibold mb-4">Edit Medicine</h2>
-                    <form method="POST" id="editForm">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="editMedicineId" id="editMedicineId">
-                        <div class="mb-4">
-                            <label for="editNamemedicine" class="block text-sm font-medium text-gray-700">Name:</label>
-                            <input type="text" name="editNamemedicine" id="editNamemedicine"
-                                class="mt-1 p-2 block w-full border-gray-300 rounded-md focus:outline-none focus:border-teal-500"
-                                required autofocus />
-                        </div>
-                        <div class="mb-4">
-                            <label for="editDescription"
-                                class="block text-sm font-medium text-gray-700">Description:</label>
-                            <textarea name="editDescription" id="editDescription"
-                                class="mt-1 p-2 block w-full border-gray-300 rounded-md focus:outline-none focus:border-teal-500" required></textarea>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <button type="submit"
-                                class="bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-600 focus:outline-none focus:bg-teal-600">Update
-                                Medicine</button>
-                            <button type="button" onclick="closeEditModal()"
-                                class="bg-gray-300 text-gray-800 ml-4 px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400">Cancel</button>
-                        </div>
-                    </form>
+    <div id="Modal" class="fixed w-full h-full top-0 left-0 items-center flex justify-center hidden z-50">
+        <div
+            class="bg-white w-full md:w-7/12 h-fit border-2 border-[#202257] flex flex-col justify-start items-center overflow-y-auto md:h-fit">
+            <div class="bg-[#202257] w-full md:w-7/12 h-8 fixed">
+                <div class="flex justify-end">
+                    <span onclick="closeModal()" class="text-2xl text-white font-bold cursor-pointer mr-3">&times;</span>
                 </div>
             </div>
+            <form method="post" onsubmit="return validateForm()"
+                class="flex flex-col justify-between items-center h-full w-full mt-[10vh]">
+                @csrf
+                <div class="flex flex-col justify-center items-center mb-3 w-full">
+                    <div id="categoryInput" class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
+                        <p class="text-xs">Category name</p>
+                        <input required class="placeholder:font-light placeholder:text-xs focus:outline-none"
+                            id="categoryname" type="text" name="category" placeholder="Name" autocomplete="off">
+                    </div>
+                    <div id="categorynameErr" class="text-red-600 text-xs text-center md:text-left pl-3"></div>
+                </div>
+                <div class="flex justify-end mb-4 w-[65%]">
+                    <input required type="submit" name="submit"
+                        class="cursor-pointer w-full px-8 py-2 bg-blue-500 font-semibold rounded-lg border-2 border-blue-600 text-white"
+                        value="Add category">
+                </div>
+            </form>
         </div>
     </div>
-    Screenings
+    {{-- Content --}}
+    <div class="w-11/12 mx-auto flex flex-col items-start justify-start mt-8 text-gray-900">
+        <div class="flex items-center flex-wrap">
+            <ul class="flex items-center">
+                <li class="inline-flex items-center">
+                    <a href="/" class="hover:text-blue-500">
+                        <svg class="w-5 h-auto fill-current " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                            fill="#000000">
+                            <path d="M0 0h24v24H0V0z" fill="none" />
+                            <path
+                                d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" />
+                        </svg>
+                    </a>
+                    <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="{{ route('dashboard') }}" class="hover:text-blue-500">Dashboard</a>
+                    <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
+                </li>
+                <li class="inline-flex items-center">
+                    <a href="{{ route('screening.index') }}" class="hover:text-blue-500">Screenings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="w-full flex justify-between items-center px-2 mt-4">
+            <p class="text-none text-xl font-semibold indent-4">Screenings</p>
+            <button onclick="openModal()" class="text-xl font-semibold hover:underline">Reserve a screening</button>
+        </div>
+    </div>
     @stack('scripts')
-    <script></script>
+    <script src="{{ asset('assets/js/screening_modal.js') }}"></script>
 
 </x-dashboard-layout>
