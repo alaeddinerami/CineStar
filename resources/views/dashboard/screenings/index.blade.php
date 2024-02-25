@@ -1,4 +1,8 @@
 <x-dashboard-layout>
+    @push('vite')
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+    @endpush
     @isset($message)
         @stack('scripts')
         <script>
@@ -18,16 +22,38 @@
                     <span onclick="closeModal()" class="text-2xl text-white font-bold cursor-pointer mr-3">&times;</span>
                 </div>
             </div>
-            <form method="post" onsubmit="return validateForm()"
+            <form method="post" action="{{ route('screening.store') }}" onsubmit="return validateForm()"
                 class="flex flex-col justify-between items-center h-full w-full mt-[10vh]">
                 @csrf
                 <div class="flex flex-col justify-center items-center mb-3 w-full">
-                    <div id="categoryInput" class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
+                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
+                        <p class="text-xs">Film</p>
+                        <select name="film" id="films">
+                            @unless (count($films) == 0)
+                                
+                            @endunless
+                        </select>
+                    </div>
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
+                        <p class="text-xs">Category name</p>
+
+                    </div>
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
+                        <p class="text-xs">Date</p>
+                        <input required class="placeholder:font-light placeholder:text-xs focus:outline-none"
+                            id="categoryname" type="date" name="date
+                            " placeholder="Name"
+                            autocomplete="off">
+                    </div>
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
                         <p class="text-xs">Category name</p>
                         <input required class="placeholder:font-light placeholder:text-xs focus:outline-none"
                             id="categoryname" type="text" name="category" placeholder="Name" autocomplete="off">
                     </div>
-                    <div id="categorynameErr" class="text-red-600 text-xs text-center md:text-left pl-3"></div>
+                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
                 </div>
                 <div class="flex justify-end mb-4 w-[65%]">
                     <input required type="submit" name="submit"
@@ -67,6 +93,14 @@
         </div>
     </div>
     @stack('scripts')
-    <script src="{{ asset('assets/js/screening_modal.js') }}"></script>
+    <script src="{{ asset('assets/js/modal.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#films').select2();
+        });
+        $(document).ready(function() {
+            $('#halls').select2();
+        });
+    </script>
 
 </x-dashboard-layout>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
+use App\Models\Hall;
 use Illuminate\Http\Request;
 
 class ScreeningController extends Controller
@@ -11,7 +13,9 @@ class ScreeningController extends Controller
      */
     public function index()
     {
-        return view("dashboard.screenings.index");
+        $films = Film::all();
+        $halls = Hall::all();
+        return view("dashboard.screenings.index", compact('films', 'halls'));
     }
 
     /**
@@ -19,6 +23,9 @@ class ScreeningController extends Controller
      */
     public function store(Request $request)
     {
+
+
+
         $operationSuccessful = false;
 
         if ($operationSuccessful) {
