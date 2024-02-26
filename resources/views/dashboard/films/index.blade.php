@@ -93,7 +93,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p>Reserve screening</p>
+                        <p>Add Film</p>
                     </button>
                 </form>
             </div>
@@ -119,7 +119,7 @@
                     <span class="mx-4 h-auto text-gray-400 font-medium">/</span>
                 </li>
                 <li class="inline-flex items-center">
-                    <a href="{{ route('screening.index') }}" class="hover:text-blue-500">Screenings</a>
+                    <a href="{{ route('film.index') }}" class="hover:text-blue-500">Films</a>
                 </li>
             </ul>
         </div>
@@ -128,7 +128,7 @@
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 type="button">
-                Add film
+                Add Films
             </button>
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
