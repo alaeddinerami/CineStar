@@ -76,5 +76,8 @@ class ActorController extends Controller
     public function destroy(Actor $actor)
     {
         //
+        $actor->Delete();
+
+        return redirect()->back()->with('success', 'Actor deleted successfully!');
     }
 }
