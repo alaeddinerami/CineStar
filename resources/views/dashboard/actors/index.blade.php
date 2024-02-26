@@ -99,7 +99,11 @@
                 Add an actor
             </button>
         </div>
+
     </div>
     @stack('scripts')
 
+    @stack('vite')
+    @vite('resources/js/actor_edit_modal.js')
 </x-dashboard-layout>
+{{-- data-modal-toggle="crud-modal" --}}
