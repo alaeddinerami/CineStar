@@ -37,20 +37,20 @@
                 </div>
                 <!-- Modal body -->
                 <form class="p-4 md:p-5" method="post" action="{{ route('actor.store') }}"
-                    onsubmit="return validateForm()">
+                    enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                            <input type="text" name="name" id="name"
+                            <input type="text" name="nameactor" id="name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Actor's full name" required="">
+                                placeholder="Actor's full name">
                         </div>
                         <div class="col-span-2">
                             <label for="image" class="block mb-2 text-sm font-medium text-gray-900">Image</label>
-                            <input type="file" name="image" id="image"
+                            <input type="file" name="image" :value="old('image')" id="image"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Actor's full name" required="">
+                                placeholder="Actor's full name">
                         </div>
                     </div>
                     <button type="submit"
@@ -99,9 +99,81 @@
                 Add an actor
             </button>
         </div>
+        <div class="shadow-lg border-t-2 w-full p-2 mt-8">
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ID</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Images</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Name</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action</th>
 
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($actors as $actor)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $actor->id }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+
+                                @if ($actor->image == null)
+                                    <img src="{{ asset('assets/images/profil.jpg') }}"
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                @else
+                                    <img src="{{ asset('storage/' . $actor->image->path) }}"
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $actor->name }}</div>
+                            </td>
+
+
+                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <butto href="" class="text-teal-500 hover:text-teal-700"
+                                    onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
+                                    Edit</butto>
+                                <form action="{{ route('actor.delete', $actor->id) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
     @stack('scripts')
+    <script>
+        $(document).ready(function() {
+            var table = $('#table').DataTable({
+                    responsive: true,
+                    pageLength: 5,
+                    lengthMenu: [
+                        [5],
+                        [5]
+                    ]
+                })
+                .columns.adjust()
+        });
+    </script>
 
     @stack('vite')
     @vite('resources/js/actor_edit_modal.js')
