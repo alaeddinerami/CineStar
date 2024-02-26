@@ -14,53 +14,88 @@
             })
         </script>
     @endisset
-    <div id="Modal" class="fixed w-full h-full top-0 left-0 items-center flex justify-center hidden z-50">
-        <div
-            class="bg-white w-full md:w-7/12 h-fit border-2 border-[#202257] flex flex-col justify-start items-center overflow-y-auto md:h-fit">
-            <div class="bg-[#202257] w-full md:w-7/12 h-8 fixed">
-                <div class="flex justify-end">
-                    <span onclick="closeModal()" class="text-2xl text-white font-bold cursor-pointer mr-3">&times;</span>
+    <div id="crud-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                    <h3 class="text-lg font-semibold text-gray-900">
+                        Create New Screening
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+                        data-modal-toggle="crud-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
                 </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5" method="post" action="{{ route('screening.store') }}"
+                    onsubmit="return validateForm()">
+                    @csrf
+                    <div class="grid gap-6 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="film" class="block mb-2 text-sm font-medium text-gray-900">Film</label>
+                            <select name="film" id="films" style="width: full;"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                <option selected="">Select film</option>
+                                @unless (count($films) == 0)
+                                    @foreach ($films as $film)
+                                        <option value="{{ $film->id }}">{{ $film->title }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>No films found</option>
+                                @endunless
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <label for="hall" class="block mb-2 text-sm font-medium text-gray-900">Hall</label>
+                            <select name="hall" id="halls" style="width: full;"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                <option selected="">Select film</option>
+                                @unless (count($halls) == 0)
+                                    @foreach ($halls as $hall)
+                                        <option value="{{ $hall->id }}">{{ $hall->name }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>No halls found</option>
+                                @endunless
+                            </select>
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="date" class="block mb-2 text-sm font-medium text-gray-900">Date</label>
+                            <input type="date" name="date" id="date"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                placeholder="Select a date" required="">
+                        </div>
+                        <div class="col-span-2 sm:col-span-1">
+                            <label for="time" class="block mb-2 text-sm font-medium text-gray-900">Time</label>
+                            <select id="time" name="time"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+                                <option selected="">Screening time</option>
+                                <option value="20:00:00">20:00</option>
+                                <option value="23:00:00">23:00</option>>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
+                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <p>Reserve screening</p>
+                    </button>
+                </form>
             </div>
-            <form method="post" action="{{ route('screening.store') }}" onsubmit="return validateForm()"
-                class="flex flex-col justify-between items-center h-full w-full mt-[10vh]">
-                @csrf
-                <div class="flex flex-col justify-center items-center mb-3 w-full">
-                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
-                        <p class="text-xs">Film</p>
-                        <select name="film" id="films">
-                            @unless (count($films) == 0)
-                                
-                            @endunless
-                        </select>
-                    </div>
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
-                        <p class="text-xs">Category name</p>
-
-                    </div>
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
-                        <p class="text-xs">Date</p>
-                        <input required class="placeholder:font-light placeholder:text-xs focus:outline-none"
-                            id="categoryname" type="date" name="date
-                            " placeholder="Name"
-                            autocomplete="off">
-                    </div>
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                    <div class="flex flex-col w-[65%] border-2 border-[#A1A1A1] p-2 rounded-md">
-                        <p class="text-xs">Category name</p>
-                        <input required class="placeholder:font-light placeholder:text-xs focus:outline-none"
-                            id="categoryname" type="text" name="category" placeholder="Name" autocomplete="off">
-                    </div>
-                    <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                </div>
-                <div class="flex justify-end mb-4 w-[65%]">
-                    <input required type="submit" name="submit"
-                        class="cursor-pointer w-full px-8 py-2 bg-blue-500 font-semibold rounded-lg border-2 border-blue-600 text-white"
-                        value="Add category">
-                </div>
-            </form>
         </div>
     </div>
     {{-- Content --}}
@@ -89,17 +124,25 @@
         </div>
         <div class="w-full flex justify-between items-center px-2 mt-4">
             <p class="text-none text-xl font-semibold indent-4">Screenings</p>
-            <button onclick="openModal()" class="text-xl font-semibold hover:underline">Reserve a screening</button>
+            <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                type="button">
+                Reserve a screening
+            </button>
         </div>
     </div>
     @stack('scripts')
-    <script src="{{ asset('assets/js/modal.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#films').select2();
+            $('#films').select2({
+                width: '100%',
+                height: '100%',
+            });
         });
         $(document).ready(function() {
-            $('#halls').select2();
+            $('#halls').select2({
+                width: '100%',
+            });
         });
     </script>
 
