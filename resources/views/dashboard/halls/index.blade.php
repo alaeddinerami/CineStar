@@ -50,7 +50,7 @@
                             <label for="seats" class="block mb-2 text-sm font-medium text-gray-900">Seats</label>
                             <input type="number" name="seats" id="seats"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Seat Number">
+                                placeholder="Seats Number">
                         </div>
                     </div>
                     <button type="submit"
@@ -103,7 +103,7 @@
                             <label for="seats" class="block mb-2 text-sm font-medium text-gray-900">Seats</label>
                             <input type="number" name="seats" id="edit_seats"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Seat Number">
+                                placeholder="Seats Number">
                         </div>
                     </div>
                     <button type="submit"

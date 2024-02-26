@@ -36,7 +36,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="{{ route('actor.store') }}"
+                <form class="p-4 md:p-5" method="post" action="{{ route('genre.store') }}"
                     enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
                     <div class="grid gap-6 mb-4 grid-cols-2">
