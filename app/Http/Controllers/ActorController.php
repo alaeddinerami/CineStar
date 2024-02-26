@@ -68,6 +68,16 @@ class ActorController extends Controller
     public function update(Request $request, Actor $actor)
     {
         //
+        $validationData = $request->validate([
+            'editnameactor'=> 'required'
+        ]);
+        $actor = Actor::findOrFail($actor->id);
+        $actor->$request->input('editnameactor');
+
+        $actor->save();
+
+        return redirect()->back();
+
     }
 
     /**
