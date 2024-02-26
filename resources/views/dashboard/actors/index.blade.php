@@ -36,8 +36,8 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="{{ route('actor.store') }}" enctype="multipart/form-data"
-                    onsubmit="return validateForm()">
+                <form class="p-4 md:p-5" method="post" action="{{ route('actor.store') }}"
+                    enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
@@ -100,8 +100,8 @@
             </button>
         </div>
         <div class="shadow-lg border-t-2 w-full p-2 mt-8">
-            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;"
-            >
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
                     <tr>
                         <th data-priority="1"
@@ -116,7 +116,7 @@
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Action</th>
-                            
+
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -127,29 +127,27 @@
                                     {{ $actor->id }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                
-                                @if($actor->image == null)
+
+                                @if ($actor->image == null)
                                     <img src="{{ asset('assets/images/profil.jpg') }}"
-                                    class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
-                                    alt="">
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
                                 @else
                                     <img src="{{ asset('storage/' . $actor->image->path) }}"
-                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
-                                        alt="">
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
                                     {{ $actor->name }}</div>
                             </td>
-                           
-                            
+
+
                             <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <butto href="" class="text-teal-500 hover:text-teal-700"
                                     onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
                                     Edit</butto>
-                                <form action="{{ route('actor.delete', $actor->id) }}"
-                                    method="POST" class="inline-block">
+                                <form action="{{ route('actor.delete', $actor->id) }}" method="POST"
+                                    class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -164,7 +162,7 @@
     </div>
     @stack('scripts')
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
             var table = $('#table').DataTable({
                     responsive: true,
                     pageLength: 5,
@@ -177,4 +175,7 @@
         });
     </script>
 
+    @stack('vite')
+    @vite('resources/js/actor_edit_modal.js')
 </x-dashboard-layout>
+{{-- data-modal-toggle="crud-modal" --}}
