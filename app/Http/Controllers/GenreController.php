@@ -12,7 +12,8 @@ class GenreController extends Controller
      */
     public function index()
     {
-        return view('dashboard.genres.index');
+        $genres = Genre::all();
+        return view('dashboard.genres.index', compact('genres'));
     }
 
     /**
