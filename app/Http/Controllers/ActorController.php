@@ -33,7 +33,6 @@ class ActorController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
         $validationData = $request->validate([
             'nameactor' => "required"
         ]);
@@ -43,8 +42,7 @@ class ActorController extends Controller
             ]
         );
 
-       $image = $this->storeImg($request->file('image'), $actor);
-        // dd($image);
+        $image = $this->storeImg($request->file('image'), $actor);
         return redirect()->back()->with('addsuccess', 'Medicine created successfully!');
     }
 
