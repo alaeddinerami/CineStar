@@ -25,11 +25,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $data = $request->all();
+        $credentials = $request->only('email', 'password');
 
-        $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+            if (isset($data['remember']) && !empty($data['remember'])) {
+                setcookie("email", $data['email'], time() + 3600);
+                setcookie("password", $data['password'], time() + 3600);
+            } else {
+                setcookie("email", "");
+                setcookie("password", "");
+            }
+
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     /**

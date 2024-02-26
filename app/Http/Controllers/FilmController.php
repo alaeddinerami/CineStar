@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Film;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
@@ -12,7 +14,10 @@ class FilmController extends Controller
      */
     public function index()
     {
-        //
+        $films = Film::with('genres')->get();
+        $genres = Genre::all();
+        $actors = Actor::all();
+        return view('dashboard.films.index', compact('films','genres','actors'));
     }
 
     /**
