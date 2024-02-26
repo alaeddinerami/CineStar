@@ -50,6 +50,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/home', function () {
+    return view('UserHome.home');
+})->name('home');
+
 Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 })->middleware(['auth', 'role:admin'])->name('dashboard');
