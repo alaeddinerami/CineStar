@@ -125,7 +125,7 @@
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
                 <li class="inline-flex items-center">
-                    <a href="/" class="hover:text-blue-500">
+                    <a href="/dashboard" class="hover:text-blue-500">
                         <svg class="w-5 h-auto fill-current " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="#000000">
                             <path d="M0 0h24v24H0V0z" fill="none" />
