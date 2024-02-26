@@ -69,12 +69,17 @@ class ActorController extends Controller
     {
         //
         $validationData = $request->validate([
-            'editnameactor'=> 'required'
+            'name'=> 'required'
         ]);
-        $actor = Actor::findOrFail($actor->id);
-        $actor->$request->input('editnameactor');
 
-        $actor->save();
+        if ($request->hasFile('image')) {
+            // dd($request->image);
+            $image = $this->storeImg($request->file('image'), $actor);
+            $this->upadateImg($request->file('image'), $actor);
+        }
+   
+
+        $actor->update($validationData);
 
         return redirect()->back();
 

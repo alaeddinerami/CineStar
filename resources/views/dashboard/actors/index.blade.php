@@ -92,10 +92,11 @@
                 <form class="p-4 md:p-5" method="post" action="" id="edit_form" enctype="multipart/form-data"
                     onsubmit="return validateForm()">
                     @csrf
+                    @method('patch')
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="edit_name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                            <input type="text" name="nameactor" id="edit_name"
+                            <input type="text" name="name" id="edit_name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 placeholder="Actor's full name">
                         </div>
@@ -114,7 +115,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p>Add actor</p>
+                        <p>Save</p>
                     </button>
                 </form>
             </div>

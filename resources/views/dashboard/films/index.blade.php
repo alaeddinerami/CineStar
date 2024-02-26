@@ -36,7 +36,7 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="{{ route('screening.store') }}"
+                <form class="p-4 md:p-5" method="post" action="{{ route('film.store') }}"
                     onsubmit="return validateForm()">
                     @csrf
                     <div class="grid gap-6 mb-4 grid-cols-2">
@@ -83,7 +83,12 @@
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Film overview"></textarea>
                         </div>
-
+                        <div class="col-span-2">
+                            <label for="image" class="block mb-2 text-sm font-medium text-gray-900">Poster</label>
+                            <input type="file" name="image" :value="old('image')" id="image"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                placeholder="Poster">
+                        </div>
                     </div>
                     <button type="submit"
                         class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
@@ -133,6 +138,73 @@
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
             {{-- table copy it from actors --}}
+            <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
+                <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                    style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                    <thead>
+                        <tr>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                ID</th>
+                            <th data-priority="1"
+                                class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Images</th>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Film title</th>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Genre</th>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($actors as $actor)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ $actor->id }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+
+                                    @if ($actor->image == null)
+                                        <img src="{{ asset('assets/images/poster.jpg') }}"
+                                            class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
+                                            alt="">
+                                    @else
+                                        <img src="{{ asset('storage/') }}"
+                                            class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
+                                            alt="">
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                    </div>
+                                </td>
+                                <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button href="" class="text-teal-500 hover:text-teal-700"
+                                        onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
+                                        Edit</button>
+                                    <form action="" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     @stack('scripts')
@@ -146,6 +218,17 @@
             $('#actors').select2({
                 width: '100%',
             });
+        });
+        $(document).ready(function() {
+            var table = $('#table').DataTable({
+                    responsive: true,
+                    pageLength: 5,
+                    lengthMenu: [
+                        [5],
+                        [5]
+                    ]
+                })
+                .columns.adjust()
         });
     </script>
 
