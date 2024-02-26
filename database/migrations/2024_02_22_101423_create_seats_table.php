@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->integer('price');
             $table->foreignId('hall_id')->constrained();
             $table->timestamps();
         });
