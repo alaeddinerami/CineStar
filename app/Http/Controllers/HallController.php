@@ -12,7 +12,8 @@ class HallController extends Controller
      */
     public function index()
     {
-        return view('dashboard.halls.index');
+        $halls = Hall::all();
+        return view('dashboard.halls.index', compact('halls'));
     }
 
     /**

@@ -130,13 +130,67 @@
                 Reserve a screening
             </button>
         </div>
+        <div class="shadow-lg border-t-2 w-full p-2 mt-8">
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ID</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Images</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Name</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action</th>
+
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @unless (count($films) == 0)
+                        @foreach ($films as $film)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+
+
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900"></div>
+                                </td>
+
+                                <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button href="" class="text-teal-500 hover:text-teal-700"
+                                        onclick="openEditModal()">
+                                        Edit</button>
+                                    <form action="{{ route('film.delete', $film->id) }}" method="POST"
+                                        class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <p class="flex h-full w-full items-center justify-center font-semibold text-lg">No films found</p>
+                    @endunless
+                </tbody>
+            </table>
+        </div>
     </div>
     @stack('scripts')
     <script>
         $(document).ready(function() {
             $('#films').select2({
                 width: '100%',
-                height: '100%',
             });
         });
         $(document).ready(function() {
