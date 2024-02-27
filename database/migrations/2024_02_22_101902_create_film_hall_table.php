@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('film_hall', function (Blueprint $table) {
             $table->id();
             $table->dateTime('date');
+            $table->boolean('cancelled')->default(false);
             $table->foreignId('hall_id')->constrained();
             $table->foreignId('film_id')->constrained();
             $table->timestamps();
