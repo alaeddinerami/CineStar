@@ -22,7 +22,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-gray-900">
-                        Add new actor
+                        Add New Actor
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -61,7 +61,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p>Add actor</p>
+                        <p>Add Actor</p>
                     </button>
                 </form>
             </div>
@@ -75,7 +75,7 @@
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                     <h3 class="text-lg font-semibold text-gray-900">
-                        Add new actor
+                        Edit Actor
                     </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
@@ -92,10 +92,11 @@
                 <form class="p-4 md:p-5" method="post" action="" id="edit_form" enctype="multipart/form-data"
                     onsubmit="return validateForm()">
                     @csrf
+                    @method('patch')
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="edit_name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                            <input type="text" name="nameactor" id="edit_name"
+                            <input type="text" name="name" id="edit_name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                 placeholder="Actor's full name">
                         </div>
@@ -114,7 +115,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p>Add actor</p>
+                        <p>Save</p>
                     </button>
                 </form>
             </div>
@@ -125,7 +126,7 @@
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
                 <li class="inline-flex items-center">
-                    <a href="/" class="hover:text-blue-500">
+                    <a href="/dashboard" class="hover:text-blue-500">
                         <svg class="w-5 h-auto fill-current " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="#000000">
                             <path d="M0 0h24v24H0V0z" fill="none" />
@@ -149,7 +150,7 @@
             <button data-modal-target="crud-modal" data-modal-toggle="crud-modal"
                 class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 type="button">
-                Add an actor
+                Add Actors
             </button>
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
@@ -231,4 +232,3 @@
     @stack('vite')
     @vite('resources/js/actor_edit_modal.js')
 </x-dashboard-layout>
-{{-- data-modal-toggle="crud-modal" --}}

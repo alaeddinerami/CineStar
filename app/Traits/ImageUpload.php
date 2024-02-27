@@ -13,6 +13,11 @@ trait ImageUpload
             "imageable_type" => get_class($obj)
         ]);
     }
+        public function upadateImg($image, object $obj)
+        {
+            $imageName = $this->move($image);
+            $obj->image()->update(["path" => $imageName]);
+    }
     public function move($image)
     {
         $imageName = time() . "." . $image->extension();

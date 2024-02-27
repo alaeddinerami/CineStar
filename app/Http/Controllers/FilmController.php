@@ -34,6 +34,21 @@ class FilmController extends Controller
     public function store(Request $request)
     {
         //
+        $validatedData = $request->validate([
+            'title'=> 'required',
+            'overview'=> 'required',
+        ]);
+        
+        $genres = $request['genres'];
+        $actors = $request['actors'];
+        array_shift($genres);
+        array_shift($actors);
+        // dd($validatedData['genres']);
+        $newfilm = Film::create($validatedData);
+        $newfilm->genres()->attach($genres);
+        $newfilm->actors()->attach($actors);
+        return redirect()->back();
+
     }
 
     /**

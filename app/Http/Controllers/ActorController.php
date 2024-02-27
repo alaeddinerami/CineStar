@@ -68,6 +68,21 @@ class ActorController extends Controller
     public function update(Request $request, Actor $actor)
     {
         //
+        $validationData = $request->validate([
+            'name'=> 'required'
+        ]);
+
+        if ($request->hasFile('image')) {
+            // dd($request->image);
+            $image = $this->storeImg($request->file('image'), $actor);
+            $this->upadateImg($request->file('image'), $actor);
+        }
+   
+
+        $actor->update($validationData);
+
+        return redirect()->back();
+
     }
 
     /**
