@@ -191,7 +191,7 @@
 
 
                             <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                <button href="" class="text-teal-500 hover:text-teal-700"
+                                <button class="text-teal-500 hover:text-teal-700"
                                     onclick="openEditModal({{ $hall->id }}, '{{ $hall->name }}', {{ $hall->seats }})">
                                     Edit</button>
                                 <form action="{{ route('hall.delete', $hall->id) }}" method="POST"

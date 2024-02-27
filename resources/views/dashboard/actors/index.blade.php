@@ -184,10 +184,10 @@
 
                                 @if ($actor->image == null)
                                     <img src="{{ asset('assets/images/profil.jpg') }}"
-                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                 @else
                                     <img src="{{ asset('storage/' . $actor->image->path) }}"
-                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -196,7 +196,7 @@
                             </td>
 
 
-                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
                                 <button href="" class="text-teal-500 hover:text-teal-700"
                                     onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
                                     Edit</button>
