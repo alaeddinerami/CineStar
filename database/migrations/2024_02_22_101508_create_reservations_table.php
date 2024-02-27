@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->boolean('refunded')->default(false);
-            $table->foreignId('seat_id')->constrained();
+            $table->foreignId('seat_id')->constrained()->nullOnDelete();
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });

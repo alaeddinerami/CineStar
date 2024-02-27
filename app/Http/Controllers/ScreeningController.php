@@ -23,21 +23,7 @@ class ScreeningController extends Controller
      */
     public function store(Request $request)
     {
-
-
-
-        $operationSuccessful = false;
-
-        if ($operationSuccessful) {
-            $message = "Screening reserved successfully!";
-        } else {
-            $message = "You can't reserve another movie on the same time.";
-        }
-
-        return back()->with([
-            'message' => $message,
-            'operationSuccessful' => $operationSuccessful,
-        ]);
+        //
     }
 
     /**
