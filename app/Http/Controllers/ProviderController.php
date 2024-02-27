@@ -37,7 +37,7 @@ class ProviderController extends Controller
     
                     ]);
                     Auth::login($newUser);
-                    return redirect()->intended(RouteServiceProvider::HOME);
+                    return redirect('/')->intended(RouteServiceProvider::HOME);
                 }
             } catch (Exception $th) {
                 // dd($th->getMessage());
