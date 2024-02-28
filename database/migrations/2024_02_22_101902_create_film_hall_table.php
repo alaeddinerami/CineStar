@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('hall_id')->constrained()->cascadeOnDelete();
             $table->foreignId('film_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

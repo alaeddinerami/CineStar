@@ -29,7 +29,7 @@ Route::middleware('role:admin')->group(function () {
     Route::post('/dashboard/actors', [ActorController::class, 'store'])->name('actor.store');
     Route::patch('/dashboard/actors/edit/{actor}', [ActorController::class, 'update'])->name('actor.update');
     Route::delete('/dashboard/actors/delete/{actor}', [ActorController::class, 'destroy'])->name('actor.delete');
-    
+
     Route::get('/dashboard/genres', [GenreController::class, 'index'])->name('genre.index');
     Route::post('/dashboard/genres', [GenreController::class, 'create'])->name('genre.store');
     Route::patch('/dashboard/genres/edit/{genre}', [GenreController::class, 'update'])->name('genre.update');
@@ -72,13 +72,3 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__ . '/auth.php';
-
-
-
-
-
- 
-
-
-
-

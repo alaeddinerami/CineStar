@@ -221,6 +221,7 @@
                     ]
                 })
                 .columns.adjust()
+                .responsive.recalc();
         });
     </script>
     @stack('vite')

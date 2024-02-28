@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('film_hall_id')->constrained('film_hall')->cascadeOnDelete();
-            $table->longText('message');
-            $table->boolean('notification')->default(true);
+            $table->enum('type', ['reschedule', 'cancellation']);
             $table->timestamps();
         });
     }

@@ -206,6 +206,7 @@
                     ]
                 })
                 .columns.adjust()
+                .responsive.recalc();
         });
     </script>
 

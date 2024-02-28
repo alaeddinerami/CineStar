@@ -6,6 +6,7 @@ trait ImageUpload
 {
     public function storeImg($image, object $obj)
     {
+        // dd($image);
         $imageName = $this->move($image);
         Image::create([
             "path" => $imageName,
