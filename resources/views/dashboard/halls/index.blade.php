@@ -3,17 +3,17 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @endpush
-    @isset($message)
+    @if (session()->has('message'))
         @stack('scripts')
         <script>
             Swal.fire({
-                title: '{{ $operationSuccessful ? 'Success' : 'Error' }}!',
-                text: '{{ $message }}',
-                icon: '{{ $operationSuccessful ? 'success' : 'error' }}',
-                confirmButtonText: 'Ok'
+                title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+                icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+                confirmButtonText: 'Ok',
+                html: '{{ session('message') }}'
             })
         </script>
-    @endisset
+    @endif
     <div id="crud-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -44,7 +44,7 @@
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
                             <input type="text" name="name" id="name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Actor's full name">
+                                placeholder="Hall Name">
                         </div>
                         <div class="col-span-2">
                             <label for="seats" class="block mb-2 text-sm font-medium text-gray-900">Seats</label>
@@ -92,6 +92,7 @@
                 <form class="p-4 md:p-5" method="post" action="" id="edit_form" enctype="multipart/form-data"
                     onsubmit="return validateForm()">
                     @csrf
+                    @method('patch')
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
@@ -153,7 +154,59 @@
             </button>
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
-            {{-- table copy it from actors --}}
+            <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                <thead>
+                    <tr>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ID</th>
+                        <th data-priority="1"
+                            class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Hall Name</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Seat Numbers</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Action</th>
+
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($halls as $hall)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $hall->id }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $hall->name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">
+                                    {{ $hall->seats }}</div>
+                            </td>
+
+
+                            <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <button class="text-teal-500 hover:text-teal-700"
+                                    onclick="openEditModal({{ $hall->id }}, '{{ $hall->name }}', {{ $hall->seats }})">
+                                    Edit</button>
+                                <form action="{{ route('hall.delete', $hall->id) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
         </div>
     </div>
     @stack('scripts')
@@ -168,7 +221,9 @@
                     ]
                 })
                 .columns.adjust()
+                .responsive.recalc();
         });
     </script>
     @stack('vite')
+    @vite('resources/js/hall_edit_modal.js')
 </x-dashboard-layout>

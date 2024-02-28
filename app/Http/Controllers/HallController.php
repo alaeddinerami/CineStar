@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hall;
+use App\Models\Seat;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class HallController extends Controller
 {
@@ -29,7 +31,31 @@ class HallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $validated = $request->validate([
+            'name' => ['required'],
+            'seats' => ['required'],
+        ]);
+
+        if (Hall::where('name', $validated['name'])->exists()) {
+            return back()->with([
+                'message' => 'Another hall name already exists with this name.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+
+        $hall = Hall::create($validated);
+
+        for ($i = 0; $i < $hall->seats; $i++) {
+            Seat::create([
+                'hall_id' => $hall->id,
+            ]);
+        }
+        return back()->with([
+            'message' => 'Hall created successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 
     /**
@@ -53,7 +79,28 @@ class HallController extends Controller
      */
     public function update(Request $request, Hall $hall)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required'],
+            'seats' => ['required'],
+        ]);
+        if (Hall::where('name', $validated['name'])->where('id', '!=', $hall->id)->exists()) {
+            return back()->with([
+                'message' => 'Another hall name already exists with this name.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+        if ($hall->films()->count() > 0) {
+            return back()->with([
+                'message' => 'You can\'t modify the hall seats numbers when its reserved for a screening.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+
+        $hall->update($validated);
+        return back()->with([
+            'message' => 'Hall updated successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 
     /**
@@ -61,6 +108,18 @@ class HallController extends Controller
      */
     public function destroy(Hall $hall)
     {
-        //
+        if ($hall->films()->count() > 0) {
+            return back()->with([
+                'message' => 'You can\'t delete the hall when its reserved for a screening.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+
+        $hall->delete();
+
+        return back()->with([
+            'message' => 'Hall deleted successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 }
