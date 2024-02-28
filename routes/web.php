@@ -31,7 +31,7 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/dashboard/actors/delete/{actor}', [ActorController::class, 'destroy'])->name('actor.delete');
     
     Route::get('/dashboard/genres', [GenreController::class, 'index'])->name('genre.index');
-    Route::post('/dashboard/genres', [GenreController::class, 'store'])->name('genre.store');
+    Route::post('/dashboard/genres', [GenreController::class, 'create'])->name('genre.store');
     Route::patch('/dashboard/genres/edit/{genre}', [GenreController::class, 'update'])->name('genre.update');
     Route::delete('/dashboard/genres/delete/{genre}', [GenreController::class, 'destroy'])->name('genre.delete');
 

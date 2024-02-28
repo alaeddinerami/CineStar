@@ -36,28 +36,28 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="{{ route('genre.store') }}"
-                    enctype="multipart/form-data" onsubmit="return validateForm()">
-                    @csrf
-                    <div class="grid gap-6 mb-4 grid-cols-2">
-                        <div class="col-span-2">
-                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                            <input type="text" name="name" id="name"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Genre Name">
+                    <form class="p-4 md:p-5" method="post" action="{{ route('genre.store') }}"
+                        enctype="multipart/form-data" onsubmit="return validateForm()">
+                        @csrf
+                        <div class="grid gap-6 mb-4 grid-cols-2">
+                            <div class="col-span-2">
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                                <input type="text" name="genre" id="name"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                    placeholder="Genre Name">
+                            </div>
                         </div>
-                    </div>
-                    <button type="submit"
-                        class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
-                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <p>Add Genre</p>
-                    </button>
-                </form>
+                        <button type="submit"
+                            class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <p>Add Genre</p>
+                        </button>
+                    </form>
             </div>
         </div>
     </div>
@@ -86,6 +86,7 @@
                 <form class="p-4 md:p-5" method="post" action="" id="edit_form" enctype="multipart/form-data"
                     onsubmit="return validateForm()">
                     @csrf
+                    @method('patch')
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
                             <label for="edit_name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
@@ -142,6 +143,57 @@
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
             {{-- table copy it from actors --}}
+            <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
+                <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
+                    style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+                    <thead>
+                        <tr>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                ID</th>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Genre</th>
+                            <th data-priority="1"
+                                class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @foreach ($genres as $genre)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ $genre->id }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ $genre->name }}
+                                    </div>
+                                </td>
+                                <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
+
+                                    <button href="#" class="text-teal-500 hover:text-teal-700"
+                                    onclick="openEditModal({{ $genre->id }}, '{{ $genre->name }}')">
+                                    Edit
+                                </button>
+
+                                    <form action="{{ route('genre.delete',$genre->id ) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     @stack('scripts')
@@ -160,4 +212,5 @@
     </script>
 
     @stack('vite')
+    @vite('resources/js/genre_edit_modal.js')
 </x-dashboard-layout>
