@@ -52,7 +52,10 @@ class FilmController extends Controller
 
         $this->storeImg($request->file('image'), $newfilm);
         
-        return redirect()->back();
+        return redirect()->back()->with([
+            'message' => 'Hall created successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);;
 
     }
 
