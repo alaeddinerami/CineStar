@@ -3,17 +3,17 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @endpush
-    @isset($message)
+    @if (session()->has('message'))
         @stack('scripts')
         <script>
             Swal.fire({
-                title: '{{ $operationSuccessful ? 'Success' : 'Error' }}!',
-                text: '{{ $message }}',
-                icon: '{{ $operationSuccessful ? 'success' : 'error' }}',
-                confirmButtonText: 'Ok'
+                title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+                icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+                confirmButtonText: 'Ok',
+                html: '{{ session('message') }}'
             })
         </script>
-    @endisset
+    @endif
     <div id="crud-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -78,7 +78,7 @@
                             <label for="time" class="block mb-2 text-sm font-medium text-gray-900">Time</label>
                             <select id="time" name="time"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
-                                <option selected="">Screening time</option>
+                                <option selected="" disabled hidden>Screening time</option>
                                 <option value="20:00:00">20:00</option>
                                 <option value="23:00:00">23:00</option>>
                             </select>
@@ -130,7 +130,7 @@
                 Reserve a screening
             </button>
         </div>
-        <div class="shadow-lg border-t-2 w-full p-2 mt-8">
+        <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
             <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                 <thead>
@@ -140,10 +140,16 @@
                             ID</th>
                         <th data-priority="1"
                             class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Images</th>
+                            Poster</th>
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Name</th>
+                            Film Title</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Hall</th>
+                        <th data-priority="1"
+                            class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Date</th>
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Action</th>
@@ -151,37 +157,44 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @unless (count($films) == 0)
-                        @foreach ($films as $film)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900"></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                    @foreach ($screenings as $screening)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $screening->id }}</div>
+                            </td>
+                            <td class="px-6 py-4 text-center whitespace-nowrap">
+                                @if ($screening->film->image == null)
+                                    <img src="{{ asset('assets/images/poster.jpg') }}"
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
+                                @else
+                                    <img src="{{ asset('storage/') }}"
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $screening->film->title }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $screening->hall->name }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $screening->date }}</div>
+                            </td>
 
-
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-gray-900"></div>
-                                </td>
-
-                                <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button href="" class="text-teal-500 hover:text-teal-700"
-                                        onclick="openEditModal()">
-                                        Edit</button>
-                                    <form action="{{ route('film.delete', $film->id) }}" method="POST"
-                                        class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="text-red-500 hover:text-red-700 ml-4">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <p class="flex h-full w-full items-center justify-center font-semibold text-lg">No films found</p>
-                    @endunless
+                            <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                <button onclick="openEditModal()" class="text-teal-500 hover:text-teal-700">
+                                    Edit
+                                </button>
+                                <form action="{{ route('hall.delete', $hall->id) }}" method="POST"
+                                    class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-red-500 hover:text-red-700 ml-4">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -189,10 +202,23 @@
     @stack('scripts')
     <script>
         $(document).ready(function() {
+            var table = $('#table').DataTable({
+                    responsive: true,
+                    pageLength: 5,
+                    lengthMenu: [
+                        [5],
+                        [5]
+                    ]
+                })
+                .columns.adjust()
+        });
+
+        $(document).ready(function() {
             $('#films').select2({
                 width: '100%',
             });
         });
+
         $(document).ready(function() {
             $('#halls').select2({
                 width: '100%',

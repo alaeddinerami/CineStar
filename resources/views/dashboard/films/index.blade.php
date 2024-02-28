@@ -3,17 +3,17 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @endpush
-    @isset($message)
+    @if (session()->has('message'))
         @stack('scripts')
         <script>
             Swal.fire({
-                title: '{{ $operationSuccessful ? 'Success' : 'Error' }}!',
-                text: '{{ $message }}',
-                icon: '{{ $operationSuccessful ? 'success' : 'error' }}',
-                confirmButtonText: 'Ok'
+                title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+                icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+                confirmButtonText: 'Ok',
+                html: '{{ session('message') }}'
             })
         </script>
-    @endisset
+    @endif
     <div id="crud-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
@@ -168,16 +168,14 @@
                                     <div class="text-sm font-medium text-gray-900">
                                         {{ $actor->id }}</div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 text-center whitespace-nowrap">
 
                                     @if ($actor->image == null)
                                         <img src="{{ asset('assets/images/poster.jpg') }}"
-                                            class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
-                                            alt="">
+                                            class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                     @else
                                         <img src="{{ asset('storage/') }}"
-                                            class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl"
-                                            alt="">
+                                            class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -188,7 +186,7 @@
                                     <div class="text-sm font-medium text-gray-900">
                                     </div>
                                 </td>
-                                <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
                                     <button href="" class="text-teal-500 hover:text-teal-700"
                                         onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
                                         Edit</button>
