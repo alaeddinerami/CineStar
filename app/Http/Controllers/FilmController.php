@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Actor;
 use App\Models\Film;
 use App\Models\Genre;
+use App\Traits\ImageUpload;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
@@ -12,6 +13,7 @@ class FilmController extends Controller
     /**
      * Display a listing of the resource.
      */
+    use ImageUpload;
     public function index()
     {
         $films = Film::with('genres')->get();
@@ -47,6 +49,9 @@ class FilmController extends Controller
         $newfilm = Film::create($validatedData);
         $newfilm->genres()->attach($genres);
         $newfilm->actors()->attach($actors);
+
+        $this->storeImg($request->file('image'), $newfilm);
+        
         return redirect()->back();
 
     }
@@ -81,5 +86,8 @@ class FilmController extends Controller
     public function destroy(Film $film)
     {
         //
+        $film->Delete();
+
+        return redirect()->back();
     }
 }
