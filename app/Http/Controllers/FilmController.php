@@ -14,12 +14,20 @@ class FilmController extends Controller
      * Display a listing of the resource.
      */
     use ImageUpload;
+
     public function index()
     {
         $films = Film::with('genres')->get();
         $genres = Genre::all();
         $actors = Actor::all();
         return view('dashboard.films.index', compact('films','genres','actors'));
+    }
+
+    public function all()
+    {
+        $films = Film::with('genres')->get();
+        $genres = Genre::all();
+        return view('films.index', compact('films','genres'));
     }
 
     /**
@@ -64,7 +72,8 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-        //
+        $film->load('halls');
+        return view('films.show', compact('film'));
     }
 
     /**

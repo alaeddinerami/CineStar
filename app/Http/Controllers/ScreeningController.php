@@ -64,9 +64,10 @@ class ScreeningController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function home()
     {
-        // 
+        $screenings = FilmHall::where('date', '>=', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date')->get();
+        return view('welcome', compact('screenings'));
     }
 
     /**
@@ -117,9 +118,9 @@ class ScreeningController extends Controller
         $seats = $screening->hall->seats()->whereHas('reservations', function ($query) use ($screening) {
             $query->where('screening_date', $screening->date);
         })->with('reservations')->get();
-        
+
         $screening->delete();
-        
+
         foreach ($seats as $seat) {
             $seat->reservations->first()->update(['refunded' => true]);
         }

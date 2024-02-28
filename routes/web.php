@@ -4,6 +4,7 @@ use App\Http\Controllers\ActorController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\HallController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\ReservationController;
@@ -21,6 +22,8 @@ use Laravel\Socialite\Facades\Socialite;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', [ScreeningController::class, 'home'])->name('welcome');
 
 Route::middleware('role:admin')->group(function () {
     Route::get('/dashboard', [ReservationController::class, 'index'])->name('dashboard');
@@ -51,9 +54,21 @@ Route::middleware('role:admin')->group(function () {
     Route::delete('/dashboard/screenings/delete/{screening}', [ScreeningController::class, 'destroy'])->name('screening.delete');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+
+    Route::get('/films', [FilmController::class, 'all'])->name('film.index');
+    Route::get('/films/{film}', [FilmController::class, 'show'])->name('film.show');
+
+
+Route::middleware('role:member')->group(function () {
+
+    Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservation.show');
+    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservation.create');
+    Route::post('/reservations', [ReservationController::class, 'store'])->name('reservation.store');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'delete'])->name('reservation.delete');
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
+});
 
 
 Route::get('/dashboard', function () {

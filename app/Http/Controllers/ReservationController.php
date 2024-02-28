@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReservationController extends Controller
 {
@@ -12,8 +15,13 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
-        return view("dashboard.dashboard");
+        $now = Carbon::now()->floorHour()->toDateTimeString();
+
+        $reservations = Reservation::where('user_id', Auth::id())->where('refunded', false)->where('screening_date', '>=', $now)->whereHas('seat.hall.films', function (Builder $query) {
+            $query->whereColumn('screening_date', 'film_hall.date');
+        })->with('seat.hall.films')->get();
+
+        return view('reservations.index', compact('reservations'));
     }
 
     /**
@@ -37,7 +45,8 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        //
+        $reservation->load('seat.hall.films');
+        return view('reservations.show');
     }
 
     /**

@@ -15,6 +15,7 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('vite')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -38,6 +39,7 @@
 
         <x-application-footer />
     </div>
+    @stack('scripts')
 </body>
 
 </html>
