@@ -106,7 +106,7 @@
                         id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
                         aria-labelledby="{{ 'day-' . $loop->index }}">
                         <ul class="flex flex-col gap-8">
-                            @foreach ($screenings->groupBy('film_id') as $film => $screenings2)
+                            @foreach ($screenings->groupBy('film_id') as $screenings2)
                                 @php
                                     $screening = $screenings2->first();
                                 @endphp
@@ -131,7 +131,7 @@
                                                     <div class="flex items-center gap-1">
                                                         @foreach ($screening->film->genres as $genre)
                                                             <p
-                                                                class="capitalize text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
+                                                                class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
                                                                 {{ $genre->name }}</p>
                                                         @endforeach
                                                     </div>
@@ -148,23 +148,15 @@
                                                     {{ $screening->film->overview }}
                                                 </p>
                                             </div>
-                                            <p class="text-lg font-semibold">Cast:</p>
-                                            <div class="grid grid-cols-2 place-items-center">
-                                                @foreach ($screening->film->actors as $actor)
-                                                    <div
-                                                        class="flex items-center justify-between w-full border-[1.5px] border-gray-400 p-[2px]">
-                                                        @if ($actor->image == null)
-                                                            <img src="{{ asset('assets/images/profil.jpg') }}"
-                                                                class="w-[8%] h-auto inline-block shrink-0 rounded-2xl"
-                                                                alt="">
-                                                        @else
-                                                            <img src="{{ asset('storage/' . $actor->image->path) }}"
-                                                                class="w-[30%] h-auto inline-block shrink-0 rounded-2xl"
-                                                                alt="">
-                                                        @endif
-                                                        <p class="text-sm">{{ $actor->name }}</p>
-                                                    </div>
-                                                @endforeach
+                                            <div>
+                                                <p class="text-lg font-semibold">Displays at:</p>
+                                                <div class="flex items-center gap-1">
+                                                    @foreach ($screenings2->groupBy('date') as $date2 => $films)
+                                                        <p
+                                                            class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
+                                                            {{ $date2 }}</p>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

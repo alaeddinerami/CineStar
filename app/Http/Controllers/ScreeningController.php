@@ -18,7 +18,7 @@ class ScreeningController extends Controller
     {
         $films = Film::all();
         $halls = Hall::all();
-        $screenings = FilmHall::where('date', '>=', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
+        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
         return view("dashboard.screenings.index", compact('films', 'halls', 'screenings'));
     }
 
@@ -66,7 +66,7 @@ class ScreeningController extends Controller
      */
     public function home()
     {
-        $screenings = FilmHall::where('date', '>=', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date')->get();
+        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date')->get();
         return view('welcome', compact('screenings'));
     }
 
