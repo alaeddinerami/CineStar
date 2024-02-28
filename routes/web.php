@@ -9,6 +9,7 @@ use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScreeningController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,13 +69,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
 require __DIR__ . '/auth.php';
 
 
 
-Route::get('/auth/{provider}/redirect', [ProviderController::class, 'redirect']);
 
-Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback']);
+
+ 
 
 
 
