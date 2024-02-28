@@ -45,7 +45,7 @@
                                 Title</label>
                             <input type="text" name="title" id="title"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Select a date" required="">
+                                placeholder="Film title" required="">
                         </div>
                         <div class="col-span-2">
                             <label for="genres" class="block mb-2 text-sm font-medium text-gray-900">Genres</label>
@@ -79,7 +79,7 @@
                             <label for="overview"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Film
                                 Overview</label>
-                            <textarea id="overview" name="overview" rows="4"
+                            <textarea id="overview_edit" name="overview" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Film overview"></textarea>
                         </div>
@@ -135,13 +135,13 @@
                         <div class="col-span-2">
                             <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Film
                                 Title</label>
-                            <input type="text" name="title" id="title"
+                            <input type="text" name="title" id="title_edit"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                placeholder="Select a date" required="">
+                                placeholder="Film title" required="">
                         </div>
                         <div class="col-span-2">
                             <label for="genres" class="block mb-2 text-sm font-medium text-gray-900">Genres</label>
-                            <select name="genres[]" id="genres" style="width: full;" multiple
+                            <select name="genres[]" id="genres_edit" style="width: full;" multiple
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                 <option selected="">Select genres</option>
                                 @unless (count($genres) == 0)
@@ -155,7 +155,7 @@
                         </div>
                         <div class="col-span-2">
                             <label for="actors" class="block mb-2 text-sm font-medium text-gray-900">Actors</label>
-                            <select name="actors[]" id="actors" style="width: full;" multiple
+                            <select name="actors[]" id="actors_edit" style="width: full;" multiple
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
                                 <option selected="">Select actors</option>
                                 @unless (count($actors) == 0)
@@ -171,7 +171,7 @@
                             <label for="overview"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Film
                                 Overview</label>
-                            <textarea id="overview" name="overview" rows="4"
+                            <textarea id="overview_edit" name="overview" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Film overview"></textarea>
                         </div>
@@ -190,7 +190,7 @@
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <p>Update Film</p>
+                        <p>Save</p>
                     </button>
                 </form>
             </div>
@@ -259,7 +259,6 @@
                                     {{ $film->id }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-
                                 @if ($film->image == null)
                                     <img src="{{ asset('assets/images/poster.jpg') }}"
                                         class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
@@ -280,7 +279,7 @@
                             </td>
                             <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button href="" class="text-teal-500 hover:text-teal-700"
-                                    onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
+                                    onclick="openEditModal({{ $film->id }}, '{{ $film->title }}')">
                                     Edit</button>
                                 <form action="{{ route('film.delete', $film->id) }}" method="POST"
                                     class="inline-block">
@@ -306,6 +305,16 @@
         });
         $(document).ready(function() {
             $('#actors').select2({
+                width: '100%',
+            });
+        });
+        $(document).ready(function() {
+            $('#genres_edit').select2({
+                width: '100%',
+            });
+        });
+        $(document).ready(function() {
+            $('#actors_edit').select2({
                 width: '100%',
             });
         });

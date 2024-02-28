@@ -179,7 +179,6 @@
                                     onclick="openEditModal({{ $genre->id }}, '{{ $genre->name }}')">
                                     Edit
                                 </button>
-
                                     <form action="{{ route('genre.delete',$genre->id ) }}" method="POST" class="inline-block">
                                         @csrf
                                         @method('DELETE')

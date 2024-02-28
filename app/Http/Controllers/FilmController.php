@@ -16,7 +16,7 @@ class FilmController extends Controller
     use ImageUpload;
     public function index()
     {
-        $films = Film::with('genres')->get();
+        $films = Film::with('genres','image')->get();
         $genres = Genre::all();
         $actors = Actor::all();
         return view('dashboard.films.index', compact('films','genres','actors'));
@@ -55,7 +55,7 @@ class FilmController extends Controller
         return redirect()->back()->with([
             'message' => 'Hall created successfully!',
             'operationSuccessful' => $this->operationSuccessful = true,
-        ]);;
+        ]);
 
     }
 
@@ -80,7 +80,32 @@ class FilmController extends Controller
      */
     public function update(Request $request, Film $film)
     {
-        //
+        $validatedData = $request->validate([
+            'title'=> 'required',
+            'overview'=> 'required',
+        ]);
+        if (Film::where('title', $validatedData['title'])->where('id', '!=', $film->id)->exists()) {
+            return back()->with([
+                'message' => 'Another film name already exists with this name.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+        $film->update($validatedData);
+
+        $genres = $request['genres'];
+        $film->genres()->sync($genres);
+
+        $actors = $request['actors'];
+        $film->actors()->sync($actors);
+
+        if($request->hasFile('image')){
+            $this->storeImg($request->file('image'), $film);
+        }
+
+        return back()->with([
+            'message' => 'Genre updated successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 
     /**
@@ -88,9 +113,11 @@ class FilmController extends Controller
      */
     public function destroy(Film $film)
     {
-        //
         $film->Delete();
 
-        return redirect()->back();
+        return back()->with([
+            'message' => 'Film deleted successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 }
