@@ -43,7 +43,10 @@ class ActorController extends Controller
         );
 
         $image = $this->storeImg($request->file('image'), $actor);
-        return redirect()->back()->with('addsuccess', 'Medicine created successfully!');
+        return redirect()->back()->with([
+            'message' => 'Hall created successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 
     /**

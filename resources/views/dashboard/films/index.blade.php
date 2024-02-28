@@ -36,8 +36,8 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post" action="{{ route('film.store') }}"
-                    onsubmit="return validateForm()">
+                <form class="p-4 md:p-5" method="post" action="{{ route('film.store') }} "
+                    enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
                     <div class="grid gap-6 mb-4 grid-cols-2">
                         <div class="col-span-2">
@@ -136,6 +136,7 @@
                 Add Films
             </button>
         </div>
+
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
             <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
                 style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
@@ -144,51 +145,53 @@
                         <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             ID</th>
-                        <th data-priority="2"
+                        <th data-priority="1"
                             class="px-8 py-4 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Images</th>
-                        <th data-priority="3"
+                        <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Film title</th>
-                        <th
+                        <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Genre</th>
-                        <th
+                        <th data-priority="1"
                             class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Action</th>
-
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach ($actors as $actor)
+                    @foreach ($films as $film)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
-                                    {{ $actor->id }}</div>
+                                    {{ $film->id }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
 
-                                @if ($actor->image == null)
+                                @if ($film->image == null)
                                     <img src="{{ asset('assets/images/poster.jpg') }}"
-                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
                                 @else
-                                    <img src="{{ asset('storage/') }}"
-                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
+                                    <img src="{{ asset('storage/' . $film->image->path) }}"
+                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
-                                </div>
+                                    {{ $film->title }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">
-                                </div>
+                                @foreach ($film->genres as $genre)
+                                    <span class="text-sm font-medium text-gray-900">
+                                        {{ $genre->name }},</span>
+                                @endforeach
                             </td>
-                            <td class="px-8 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <button href="" class="text-teal-500 hover:text-teal-700"
                                     onclick="openEditModal({{ $actor->id }}, '{{ $actor->name }}')">
                                     Edit</button>
-                                <form action="" method="POST" class="inline-block">
+                                <form action="{{ route('film.delete', $film->id) }}" method="POST"
+                                    class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
