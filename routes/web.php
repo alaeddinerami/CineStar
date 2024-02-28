@@ -47,8 +47,8 @@ Route::middleware('role:admin')->group(function () {
 
     Route::get('/dashboard/screenings', [ScreeningController::class, 'index'])->name('screening.index');
     Route::post('/dashboard/screenings', [ScreeningController::class, 'store'])->name('screening.store');
-    Route::patch('/dashboard/screenings/edit/{screening}', [ScreeningController::class, 'update'])->name('screening.update');
-    Route::delete('/dashboard/screenings/delete/{screening}', [ScreeningController::class, 'destroy'])->name('screening.delete');
+    Route::patch('/dashboard/screenings/edit/{filmhall}', [ScreeningController::class, 'update'])->name('screening.update');
+    Route::delete('/dashboard/screenings/delete/{filmhall}', [ScreeningController::class, 'destroy'])->name('screening.delete');
 });
 
 Route::get('/', function () {

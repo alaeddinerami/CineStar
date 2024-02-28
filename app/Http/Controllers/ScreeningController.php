@@ -65,15 +65,33 @@ class ScreeningController extends Controller
      */
     public function edit()
     {
-        return view('dashboard.screenings.edit');
+        // 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,)
+    public function update(Request $request, FilmHall $screening)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required',
+            'time' => 'required',
+        ]);
+
+        $date = $validated['date'] . ' ' . $validated['time'];
+        $date_now = Carbon::now()->floorHour()->toDateTimeString();
+        if ($date_now >= $date) {
+            return back()->with([
+                'message' => 'You can\'t reserve a screening at this hour.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
+        if (FilmHall::where('hall_id', $validated['hall'])->where('date', $date)->exists()) {
+            return back()->with([
+                'message' => 'A film is already scheduled at this hour.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
+        }
     }
 
     /**
