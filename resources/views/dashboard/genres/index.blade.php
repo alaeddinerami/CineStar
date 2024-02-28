@@ -143,7 +143,6 @@
         </div>
         <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
             {{-- table copy it from actors --}}
-            <div class="shadow-lg border-t-2 rounded-lg w-full p-2 mt-8">
                 <table id="table" class="min-w-full divide-y divide-gray-200 stripe hover"
                     style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
                     <thead>
@@ -193,7 +192,6 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
         </div>
     </div>
     @stack('scripts')

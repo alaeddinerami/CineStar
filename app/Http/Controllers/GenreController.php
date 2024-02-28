@@ -21,14 +21,26 @@ class GenreController extends Controller
      */
     public function create(Request $request)
 {
-    $request->validate([
+    $validated = $request->validate([
         'genre' => 'required',
     ]);
+
+    if (Genre::where('name', $validated['genre'])->exists()) {
+        return back()->with([
+            'message' => 'Another genre name already exists with this name.',
+            'operationSuccessful' => $this->operationSuccessful,
+        ]);
+    }
+
     Genre::create([
         'name' => $request->genre,
     ]);
 
-    return redirect()->back()->with('sucesses');
+    return back()->with([
+        'message' => 'Genre created successfully!',
+        'operationSuccessful' => $this->operationSuccessful = true,
+    ]);
+
 }
 
 
@@ -64,9 +76,18 @@ class GenreController extends Controller
     $validatedData = $request->validate([
         'name' => 'required',
     ]);
+    if (Genre::where('name', $validatedData['name'])->where('id', '!=', $genre->id)->exists()) {
+        return back()->with([
+            'message' => 'Another genre name already exists with this name.',
+            'operationSuccessful' => $this->operationSuccessful,
+        ]);
+    }
     $genre->update($validatedData);
 
-    return redirect()->back()->with('success');
+    return back()->with([
+        'message' => 'Genre updated successfully!',
+        'operationSuccessful' => $this->operationSuccessful = true,
+    ]);
 }
 
     
@@ -75,9 +96,13 @@ class GenreController extends Controller
      */
     public function destroy(Genre $genre)
     {
+
         $genre->delete();
-        
-        return redirect()->back()->with('success', 'Actor deleted successfully!');
+        return back()->with([
+            'message' => 'Genre deleted successfully!',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
+
 
     }
 }
