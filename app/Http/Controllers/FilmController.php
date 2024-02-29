@@ -73,7 +73,7 @@ class FilmController extends Controller
     {
         $film->load(['halls' => function ($query) {
             $query->withPivot('date');
-        }]);
+        }, 'genres', 'actors']);
         return view('films.show', compact('film'));
     }
 

@@ -109,7 +109,6 @@
                                     @php
                                         $screening = $screenings2->first();
                                     @endphp
-
                                     <li>
                                         <div class="flex flex-col md:flex-row gap-4">
                                             @if ($screening->film->image == null)
