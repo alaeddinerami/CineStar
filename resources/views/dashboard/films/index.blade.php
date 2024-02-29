@@ -259,6 +259,7 @@
                                     {{ $film->id }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
+                                {{-- @dump($film->image->path) --}}
                                 @if ($film->image == null)
                                     <img src="{{ asset('assets/images/poster.jpg') }}"
                                         class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">

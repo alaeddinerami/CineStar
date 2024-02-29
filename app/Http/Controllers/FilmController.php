@@ -72,7 +72,11 @@ class FilmController extends Controller
      */
     public function edit(Film $film)
     {
-        //
+        $genres = Genre::all(); 
+        $actors = Actor::all(); 
+        dump($actors);
+        dump($genres);
+        return view('/dashboard/films', compact('film', 'genres', 'actors'));
     }
 
     /**
@@ -88,8 +92,8 @@ class FilmController extends Controller
             return back()->with([
                 'message' => 'Another film name already exists with this name.',
                 'operationSuccessful' => $this->operationSuccessful,
-            ]);
-        }
+        ]);
+    }
         $film->update($validatedData);
 
         $genres = $request['genres'];
@@ -114,7 +118,6 @@ class FilmController extends Controller
     public function destroy(Film $film)
     {
         $film->Delete();
-
         return back()->with([
             'message' => 'Film deleted successfully!',
             'operationSuccessful' => $this->operationSuccessful = true,
