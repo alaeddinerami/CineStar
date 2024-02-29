@@ -56,8 +56,9 @@ Route::middleware('role:admin')->group(function () {
 
 
     Route::get('/films', [FilmController::class, 'all'])->name('films.index');
-    // Route::get('/search', [FilmController::class ,'search'])->name('films.search');
     Route::get('/films/{film}', [FilmController::class, 'show'])->name('film.show');
+    Route::get('/films/{film:slug}', [FilmController::class, 'show'])->name('film.show');
+
 
 
 Route::middleware('role:member')->group(function () {
