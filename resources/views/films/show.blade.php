@@ -10,7 +10,7 @@
 </script>
 @endif
 <x-app-layout>
-    show film
+    @dd($film)
     @stack('vite')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
 </x-app-layout>
