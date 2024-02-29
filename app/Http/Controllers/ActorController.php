@@ -77,7 +77,7 @@ class ActorController extends Controller
 
         if ($request->hasFile('image')) {
             // dd($request->image);
-            $image = $this->storeImg($request->file('image'), $actor);
+            $this->storeImg($request->file('image'), $actor);
             $this->upadateImg($request->file('image'), $actor);
         }
    

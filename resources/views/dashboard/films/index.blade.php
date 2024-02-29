@@ -79,7 +79,7 @@
                             <label for="overview"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Film
                                 Overview</label>
-                            <textarea id="overview_edit" name="overview" rows="4"
+                            <textarea id="overview" name="overview" rows="4"
                                 class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Film overview"></textarea>
                         </div>
@@ -120,8 +120,8 @@
                         data-modal-toggle="edit-modal">
                         <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
                         </svg>
                         <span class="sr-only">Close modal</span>
                     </button>
@@ -279,8 +279,12 @@
                                 @endforeach
                             </td>
                             <td class="px-8 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                @php
+                                    $genres = $film->genres->pluck('id')->toArray();
+                                    $actors = $film->actors->pluck('id')->toArray();
+                                @endphp
                                 <button href="" class="text-teal-500 hover:text-teal-700"
-                                    onclick="openEditModal({{ $film->id }}, '{{ $film->title }}')">
+                                    onclick="openEditModal({{ $film->id }}, '{{ $film->title }}', '{{ $film->overview }}', {{ json_encode($genres) }}, {{ json_encode($actors) }})">
                                     Edit</button>
                                 <form action="{{ route('film.delete', $film->id) }}" method="POST"
                                     class="inline-block">
@@ -309,16 +313,22 @@
                 width: '100%',
             });
         });
-        $(document).ready(function() {
-            $('#genres_edit').select2({
-                width: '100%',
+
+        function select_genres_fun() {
+            $(document).ready(function() {
+                $('#genres_edit').select2({
+                    width: '100%',
+                });
             });
-        });
-        $(document).ready(function() {
-            $('#actors_edit').select2({
-                width: '100%',
+        }
+
+        function select_actors_fun() {
+            $(document).ready(function() {
+                $('#actors_edit').select2({
+                    width: '100%',
+                });
             });
-        });
+        }
         $(document).ready(function() {
             var table = $('#table').DataTable({
                     responsive: true,

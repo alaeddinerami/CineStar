@@ -17,7 +17,7 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::with('genres','image')->get();
+        $films = Film::with('actors','genres','image')->get();
         $genres = Genre::all();
         $actors = Actor::all();
         return view('dashboard.films.index', compact('films','genres','actors'));
@@ -113,6 +113,7 @@ class FilmController extends Controller
 
         if($request->hasFile('image')){
             $this->storeImg($request->file('image'), $film);
+            $this->upadateImg($request->file('image'), $film);
         }
 
         return back()->with([
