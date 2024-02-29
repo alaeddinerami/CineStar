@@ -262,10 +262,10 @@
                                 {{-- @dump($film->image->path) --}}
                                 @if ($film->image == null)
                                     <img src="{{ asset('assets/images/poster.jpg') }}"
-                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                 @else
                                     <img src="{{ asset('storage/' . $film->image->path) }}"
-                                        class="w-[60px] h-[60px] inline-block shrink-0 rounded-2xl" alt="">
+                                        class="w-[60px] h-auto inline-block shrink-0 rounded-2xl" alt="">
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

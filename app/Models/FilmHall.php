@@ -12,6 +12,10 @@ class FilmHall extends Model
 
     protected $table = 'film_hall';
 
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
     public function film()
     {
         return $this->belongsTo(Film::class);

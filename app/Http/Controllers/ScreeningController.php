@@ -18,7 +18,7 @@ class ScreeningController extends Controller
     {
         $films = Film::all();
         $halls = Hall::all();
-        $screenings = FilmHall::where('date', '>=', Carbon::now()->floorHour())->with('film', 'hall')->get();
+        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
         return view("dashboard.screenings.index", compact('films', 'halls', 'screenings'));
     }
 
@@ -64,9 +64,10 @@ class ScreeningController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function home()
     {
-        // 
+        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date')->get();
+        return view('welcome', compact('screenings'));
     }
 
     /**
@@ -112,8 +113,21 @@ class ScreeningController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy()
+    public function destroy(FilmHall $screening)
     {
-        //
+        $seats = $screening->hall->seats()->whereHas('reservations', function ($query) use ($screening) {
+            $query->where('screening_date', $screening->date);
+        })->with('reservations')->get();
+
+        $screening->delete();
+
+        foreach ($seats as $seat) {
+            $seat->reservations->first()->update(['refunded' => true]);
+        }
+
+        return back()->with([
+            'message' => 'Film screening cancelled successfully! Users who bought reservations will be notified and refunded.',
+            'operationSuccessful' => $this->operationSuccessful = true,
+        ]);
     }
 }

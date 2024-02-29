@@ -193,11 +193,11 @@
                             </button>
                         </div>
                         <div class="col-span-1">
-                            <button data-modal-toggle="delete-modal"
-                                class="text-white inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
+                            <a data-modal-toggle="delete-modal"
+                                class="text-white cursor-pointer inline-flex justify-center items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full">
 
                                 <p>Back</p>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </form>
@@ -307,6 +307,7 @@
     <script>
         $(document).ready(function() {
             let table = $('#table').DataTable({
+                    order: [],
                     responsive: true,
                     pageLength: 5,
                     lengthMenu: [
