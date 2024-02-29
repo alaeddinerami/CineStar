@@ -30,7 +30,6 @@ window.openEditModal = function (id, title, overview, genres, actors) {
             option.selected = true;
         }
     });
-
     select_genres_fun();
     select_actors_fun();
 

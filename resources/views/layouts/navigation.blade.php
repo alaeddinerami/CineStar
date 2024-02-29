@@ -20,9 +20,13 @@
                 @endhasrole
                 @hasrole('member')
                 @endhasrole
-
+                
                 {{-- Add nav items that visitor can view below --}}
-
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
+                        {{ __('FILMS') }}
+                    </x-nav-link>
+                </div>   
                 {{-- End nav items --}}
             </div>
 
@@ -97,7 +101,9 @@
         @endhasrole
         @hasrole('member')
         @endhasrole
+        {{-- no roles needed --}}
 
+        {{--  --}}
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             @auth

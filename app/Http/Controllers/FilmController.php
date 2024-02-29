@@ -23,12 +23,29 @@ class FilmController extends Controller
         return view('dashboard.films.index', compact('films','genres','actors'));
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $films = Film::with('genres')->get();
-        $genres = Genre::all();
-        return view('films.index', compact('films','genres'));
+        $films = Film::with('image');
+    
+        $search = $request->input('search');
+        if ($search) {
+            $films = $films->where('title', 'like', '%' . $search . '%')
+                ->orWhereHas('genres', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        }
+        $films = $films->paginate(4);
+        
+        return view('films.index', compact('films'));
     }
+    
+
+//     public function search(Request $request)
+// {
+    
+    
+//     return view('films.index', compact('filmss'));
+// }
 
     /**
      * Show the form for creating a new resource.
