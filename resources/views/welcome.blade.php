@@ -106,7 +106,7 @@
                         id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
                         aria-labelledby="{{ 'day-' . $loop->index }}">
                         <ul class="flex flex-col gap-8">
-                            @foreach ($screenings->groupBy('film_id') as $screenings2)
+                            @foreach ($screenings->groupBy('film_id') as $id => $screenings2)
                                 @php
                                     $screening = $screenings2->first();
                                 @endphp
@@ -126,7 +126,7 @@
                                             <div class="w-full flex justify-between items-center">
                                                 <div class="flex flex-col gap-1">
                                                     <a href="{{ route('film.show', $screening->film->id) }}"
-                                                        class="text-3xl hover:text-blue-600 font-semibold">{{ $screening->film->title }}
+                                                        class="text-3xl hover:text-purple-600 font-semibold">{{ $screening->film->title }}
                                                     </a>
                                                     <div class="flex items-center gap-1">
                                                         @foreach ($screening->film->genres as $genre)
