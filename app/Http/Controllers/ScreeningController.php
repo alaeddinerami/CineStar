@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReservationRefunded;
 use App\Models\Film;
 use App\Models\FilmHall;
 use App\Models\Hall;
@@ -18,7 +19,7 @@ class ScreeningController extends Controller
     {
         $films = Film::all();
         $halls = Hall::all();
-        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
+        $screenings = FilmHall::where('cancelled', false)->where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
         return view("dashboard.screenings.index", compact('films', 'halls', 'screenings'));
     }
 
@@ -119,10 +120,16 @@ class ScreeningController extends Controller
             $query->where('screening_date', $screening->date);
         })->with('reservations')->get();
 
-        $screening->delete();
+        $screening->update([
+            'cancelled' => true,
+        ]);
 
         foreach ($seats as $seat) {
-            $seat->reservations->first()->update(['refunded' => true]);
+            $reservation = $seat->reservations->where('screening_date', $screening->date)->first();
+            if ($reservation) {
+                $reservation->update(['refunded' => true]);
+                event(new ReservationRefunded($reservation));
+            }
         }
 
         return back()->with([

@@ -150,9 +150,12 @@
                                                     <p class="text-lg font-semibold">Displays at:</p>
                                                     <div class="flex items-center gap-1">
                                                         @foreach ($screenings2->groupBy('date') as $date2 => $films)
+                                                            @php
+                                                                $date = explode(' ', $date2);
+                                                            @endphp
                                                             <p
-                                                                class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
-                                                                {{ $date2 }}</p>
+                                                                class="capitalize cursor-default font-semibold text-sm p-1 px-2 rounded-xl border bg-purple-600 border-purple-500 text-gray-200">
+                                                                {{ $date[1] }}</p>
                                                         @endforeach
                                                     </div>
                                                 </div>

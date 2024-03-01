@@ -1,15 +1,15 @@
-@if (session()->has('message'))
-    @stack('scripts')
-    <script>
-        Swal.fire({
-            title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
-            icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
-            confirmButtonText: 'Ok',
-            html: '{{ session('message') }}'
-        })
-    </script>
-@endif
 <x-app-layout>
+    @if (session()->has('message'))
+        @stack('scripts')
+        <script>
+            Swal.fire({
+                title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+                icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+                confirmButtonText: 'Ok',
+                html: '{{ session('message') }}'
+            })
+        </script>
+    @endif
     <div class="w-11/12 mx-auto flex flex-col items-start justify-start mt-8 mb-20 gap-8 text-gray-900">
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
@@ -37,10 +37,10 @@
             <div class="flex justify-center gap-4">
                 @if ($film->image == null)
                     <img src="{{ asset('assets/images/poster.jpg') }}"
-                        class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl" alt="">
+                        class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl shadow-md" alt="">
                 @else
                     <img src="{{ asset('storage/' . $film->image->path) }}"
-                        class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl" alt="">
+                        class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl shadow-md" alt="">
                 @endif
                 <div class="flex flex-col justify-between">
                     <div class="w-full flex justify-between items-center">
@@ -65,7 +65,7 @@
                     <div>
                         <p class="text-lg font-semibold">Cast:</p>
                         <div
-                            class="grid place-items-center grid-cols-2 sm:grid-cols-3 gap-[1px] bg-gray-100 rounded-md shadow p-2">
+                            class="grid place-items-center grid-cols-2 sm:grid-cols-3 gap-[1px] bg-gray-100 rounded-md shadow-md p-2">
                             @foreach ($film->actors as $actor)
                                 <div
                                     class="w-full flex items-center justify-between p-1 border-2 border-gray-500 rounded">
@@ -85,14 +85,14 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col">
+            <div class="flex flex-col gap-1">
                 @php
                     $halls_name = $film->halls->groupBy('name');
                     // dd($halls);
                 @endphp
                 <p class="text-2xl font-semibold my-4">Screenings:</p>
                 @unless (count($halls_name) == 0)
-                    <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                    <div class="border-b border-gray-200 dark:border-gray-700">
                         <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
                             data-tabs-toggle="#default-styled-tab-content"
                             data-tabs-active-classes="text-purple-600 hover:text-purple-600 border-purple-600 dark:border-purple-500"
@@ -114,15 +114,15 @@
 
                     <div id="default-styled-tab-content">
                         @foreach ($halls_name as $halls)
-                            <div class="hidden p-4 rounded-lg shadow-md bg-gray-50 w-[90%] md:w-4/5"
+                            <div class="hidden p-4 rounded-lg shadow-md bg-gray-100"
                                 id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
                                 aria-labelledby="{{ 'day-' . $loop->index }}">
-                                <ul class="flex gap-2">
+                                <ul class="flex flex-col gap-4 w-fit">
                                     @foreach ($halls as $hall)
                                         <li>
-                                            <p
-                                                class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
-                                                {{ $hall->pivot->date }}</p>
+                                            <a href="{{ route('reservation.create', [$hall->pivot->date, $hall->id]) }}"
+                                                class="capitalize cursor-default font-semibold p-2 rounded-xl border bg-purple-600 cursor-pointer border-gray-500 text-gray-200 hover:bg-purple-500">
+                                                {{ $hall->pivot->date->format('l H:i:s') }}</a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -130,7 +130,7 @@
                         @endforeach
                     </div>
                 @else
-                    <div class="p-4 border-t-2 rounded-lg bg-gray-50 w-[90%] md:w-4/5">
+                    <div class="p-4 border-t-2 rounded-lg bg-gray-50">
                         <p class="w-full text-center text-xl font-semibold">There are no screenings for this film.</p>
                     </div>
                 @endunless

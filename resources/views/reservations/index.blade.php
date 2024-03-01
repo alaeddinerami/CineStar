@@ -1,15 +1,15 @@
-@if (session()->has('message'))
-@stack('scripts')
-<script>
-    Swal.fire({
-        title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
-        icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
-        confirmButtonText: 'Ok',
-        html: '{{ session('message') }}'
-    })
-</script>
-@endif
 <x-app-layout>
+    @if (session()->has('message'))
+    @stack('scripts')
+    <script>
+        Swal.fire({
+            title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+            icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+            confirmButtonText: 'Ok',
+            html: '{{ session('message') }}'
+        })
+    </script>
+    @endif
     reservations
     @stack('vite')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    

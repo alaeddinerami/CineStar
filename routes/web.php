@@ -55,15 +55,15 @@ Route::middleware('role:admin')->group(function () {
 });
 
 
-    Route::get('/films', [FilmController::class, 'all'])->name('films.index');
-    Route::get('/films/{film:slug}', [FilmController::class, 'show'])->name('film.show');
+Route::get('/films', [FilmController::class, 'all'])->name('films.index');
+Route::get('/films/{film:slug}', [FilmController::class, 'show'])->name('film.show');
 
 
 Route::middleware('role:member')->group(function () {
 
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
     Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservation.show');
-    Route::get('/reservations/create', [ReservationController::class, 'create'])->name('reservation.create');
+    Route::get('/reservations/create/{date}/{hall}', [ReservationController::class, 'create'])->name('reservation.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservation.store');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'delete'])->name('reservation.delete');
 

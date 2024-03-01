@@ -12,6 +12,7 @@ class Film extends Model
 {
     use HasFactory, HasSlug;
 
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -19,7 +20,7 @@ class Film extends Model
             ->saveSlugsTo('slug');
     }
 
-        /**
+    /**
      * Get the route key for the model.
      *
      * @return string
@@ -36,7 +37,7 @@ class Film extends Model
 
     public function halls()
     {
-        return $this->belongsToMany(Hall::class, 'film_hall');
+        return $this->belongsToMany(Hall::class)->using(FilmHallPivot::class);
     }
 
     public function genres()
