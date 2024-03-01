@@ -132,6 +132,11 @@ class ScreeningController extends Controller
             }
         }
 
+        Notification::create([
+            'film_hall_id' => $screening->id,
+            'type' => 'cancellation',
+        ]);
+
         return back()->with([
             'message' => 'Film screening cancelled successfully! Users who bought reservations will be notified and refunded.',
             'operationSuccessful' => $this->operationSuccessful = true,
