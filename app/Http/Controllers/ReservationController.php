@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Film;
 use App\Models\Hall;
 use App\Models\Seat;
 use App\Models\FilmHall;
@@ -31,7 +32,7 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($date, Hall $hall)
+    public function create($date, Hall $hall, Film $film)
     {
         $now = Carbon::now()->floorHour()->toDateTimeString();
         if ($now >= $date) {
@@ -46,8 +47,8 @@ class ReservationController extends Controller
                 'operationSuccessful' => $this->operationSuccessful,
             ]);
         }
-        $hall->load('seats');
-        return view('reservations.create', compact('date', 'hall'));
+        $hall->load('seats.reservations');
+        return view('reservations.create', compact('date', 'hall', 'film'));
     }
 
     /**

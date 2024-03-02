@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\ReservationRefunded;
-use App\Models\Film;
-use App\Models\FilmHall;
-use App\Models\Hall;
-use App\Models\Notification;
 use Carbon\Carbon;
+use App\Models\Film;
+use App\Models\Hall;
+use Spatie\Image\Image;
+use App\Models\FilmHall;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Events\ReservationRefunded;
+use Spatie\Browsershot\Browsershot;
 
 class ScreeningController extends Controller
 {

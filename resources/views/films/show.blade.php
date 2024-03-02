@@ -120,7 +120,7 @@
                                 <ul class="flex flex-col gap-4 w-fit">
                                     @foreach ($halls as $hall)
                                         <li>
-                                            <a href="{{ route('reservation.create', [$hall->pivot->date, $hall->id]) }}"
+                                            <a href="{{ route('reservation.create', [$hall->pivot->date, $hall->id, $film->slug]) }}"
                                                 class="capitalize cursor-default font-semibold p-2 rounded-xl border bg-purple-600 cursor-pointer border-gray-500 text-gray-200 hover:bg-purple-500">
                                                 {{ $hall->pivot->date->format('l H:i:s') }}</a>
                                         </li>

@@ -63,7 +63,7 @@ Route::middleware('role:member')->group(function () {
 
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservation.index');
     Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservation.show');
-    Route::get('/reservations/create/{date}/{hall}', [ReservationController::class, 'create'])->name('reservation.create');
+    Route::get('/reservations/create/{date}/{hall}/{film:slug}', [ReservationController::class, 'create'])->name('reservation.create');
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservation.store');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'delete'])->name('reservation.delete');
 
