@@ -43,15 +43,14 @@
             class="w-full flex flex-col gap-6 border-t-2 rounded-md shadow-lg p-3 h-[70vh] sm:h-[80vh] overflow-x-auto">
             <form method="post" action="{{ route('reservation.store') }}" class="flex h-full flex-col justify-around">
                 @csrf
-                @php
-                    $disabled = false;
-                @endphp
+
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                 <input type="hidden" name="screening_date" id="" value="{{ $date }}">
                 <div class="flex flex-wrap w-[1223px] justify-center items-center transition-all duration-100">
                     @foreach ($seats = $hall->seats()->get() as $seat)
-                        @dd($seat->reservations()->where('screening_date', $date)->get())
                         @php
+                            $disabled = false;
+
                             if ($seat->reservations()->where('screening_date', $date)->exists()) {
                                 $disabled = true;
                             }
