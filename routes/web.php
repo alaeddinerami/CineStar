@@ -68,7 +68,7 @@ Route::middleware('role:member')->group(function () {
     Route::post('/reservations', [ReservationController::class, 'store'])->name('reservation.store');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'delete'])->name('reservation.delete');
 
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
+    Route::get('/notifications/{notification}', [NotificationController::class, 'show'])->name('notification.show');
 });
 
 

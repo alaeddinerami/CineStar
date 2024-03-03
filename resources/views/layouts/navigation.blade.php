@@ -37,10 +37,10 @@
                         <x-slot name="trigger">
                             <button
                                 class="relative inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                @if ($notifications->count() > 0)
+                                @if ($count = $notifications->where('read_at', null)->count() > 0)
                                     <div
                                         class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
-                                        {{ $notifications->count() }}</div>
+                                        {{ $count }}</div>
                                 @endif
                                 <div>{{ Auth::user()->name }}</div>
 
@@ -64,7 +64,7 @@
                                     {{ __('Reservations') }}
                                 </x-dropdown-link>
                                 <x-dropdown-button data-modal-toggle="notifications-modal"
-                                    data-modal-target="notifications-modal" :count="$notifications->count()">
+                                    data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
                                     {{ __('Notifications') }}
                                 </x-dropdown-button>
                             @endhasrole
@@ -92,10 +92,10 @@
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
                     class="relative inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                    @if ($notifications->count() > 0)
+                    @if ($count = $notifications->where('read_at', null)->count() > 0)
                         <div
                             class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                            {{ $notifications->count() }}</div>
+                            {{ $count }}</div>
                     @endif
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
@@ -126,7 +126,7 @@
             </div>
             <div class="pt-2 pb-3 space-y-1">
                 <x-responsive-nav-button data-modal-toggle="notifications-modal" data-modal-target="notifications-modal"
-                    :count="$notifications->count()">
+                    :count="$notifications->where('read_at', null)->count()">
                     {{ __('Notifications') }}
                 </x-responsive-nav-button>
             </div>
