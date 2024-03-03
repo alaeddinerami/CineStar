@@ -22,7 +22,11 @@
                 @endhasrole
 
                 {{-- Add nav items that visitor can view below --}}
-
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
+                        {{ __('FILMS') }}
+                    </x-nav-link>
+                </div>
                 {{-- End nav items --}}
             </div>
 
@@ -50,6 +54,11 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
+                            @hasrole('member')
+                                <x-dropdown-link :href="route('reservation.index')">
+                                    {{ __('Reservations') }}
+                                </x-dropdown-link>
+                            @endhasrole
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -97,7 +106,9 @@
         @endhasrole
         @hasrole('member')
         @endhasrole
+        {{-- no roles needed --}}
 
+        {{--  --}}
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             @auth
@@ -110,6 +121,11 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
+                    @hasrole('member')
+                        <x-responsive-nav-link :href="route('reservation.index')">
+                            {{ __('Reservations') }}
+                        </x-responsive-nav-link>
+                    @endhasrole
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">

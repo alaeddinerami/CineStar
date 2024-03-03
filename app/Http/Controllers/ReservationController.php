@@ -22,10 +22,9 @@ class ReservationController extends Controller
     {
         $now = Carbon::now()->floorHour()->toDateTimeString();
 
-        $reservations = Reservation::where('user_id', Auth::id())->where('refunded', false)->where('screening_date', '>=', $now)->whereHas('seat.hall.films', function (Builder $query) {
-            $query->whereColumn('screening_date', 'film_hall.date');
-        })->with('seat.hall.films')->get();
-
+        $reservations = Reservation::where('user_id', Auth::id())->where('refunded', false)->where('screening_date', '>=', $now)->with(['seat.hall.films' => function ($query) {
+            $query->withPivot('date');
+        }])->paginate(5);
         return view('reservations.index', compact('reservations'));
     }
 
@@ -36,10 +35,7 @@ class ReservationController extends Controller
     {
         $now = Carbon::now()->floorHour()->toDateTimeString();
         if ($now >= $date) {
-            return redirect()->back()->with([
-                'message' => 'Unkown error code:404',
-                'operationSuccessful' => $this->operationSuccessful,
-            ]);
+            return abort('404');
         }
         if (!FilmHall::where('date', $date)->where('hall_id', $hall->id)->where('cancelled', false)->exists()) {
             return redirect()->back()->with([
@@ -91,8 +87,12 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
+        if (Auth::id() !== $reservation->user_id) {
+            return abort('404');
+        }
+        $film = Film::where('slug', request()->route('film'))->firstOrFail();
         $reservation->load('seat.hall.films');
-        return view('reservations.show');
+        return view('reservations.show', compact('reservation', 'film'));
     }
 
     /**

@@ -51,7 +51,7 @@
                         @php
                             $disabled = false;
 
-                            if ($seat->reservations()->where('screening_date', $date)->exists()) {
+                            if ($seat->reservations()->where('screening_date', $date)->where('refunded', false)->exists()) {
                                 $disabled = true;
                             }
                         @endphp

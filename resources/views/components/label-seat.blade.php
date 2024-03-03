@@ -24,9 +24,9 @@
     class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white text-center transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
     Seat {{ $seat->id }} <br>
     @if ($disabled)
-        <p class="text-red-500 font-semibold">Not Available</p>
+        <p class="text-red-500 font-bold">Not Available</p>
     @else
-        <p class="text-green-600 font-semibold">Available</p>
+        <p class="text-green-500 font-bold">Available</p>
     @endif
     <div class="tooltip-arrow" data-popper-arrow></div>
 </div>
