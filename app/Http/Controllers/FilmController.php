@@ -89,9 +89,10 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-        $film->load(['halls' => function ($query) {
-            $query->withPivot('date');
-        }, 'genres', 'actors']);
+        $now = now()->toDateTimeString();
+        $film->load(['halls' => function ($query) use ($now) {
+            $query->where('date', '>', $now)->withPivot('date');
+        }]);
         return view('films.show', compact('film'));
     }
 

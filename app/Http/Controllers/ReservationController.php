@@ -21,7 +21,7 @@ class ReservationController extends Controller
     public function index()
     {
         $now = Carbon::now()->floorHour()->toDateTimeString();
-
+        
         $reservations = Reservation::where('user_id', Auth::id())->where('refunded', false)->where('screening_date', '>=', $now)->with(['seat.hall.films' => function ($query) {
             $query->withPivot('date');
         }])->paginate(5);

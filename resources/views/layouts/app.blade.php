@@ -32,6 +32,8 @@
             </header>
         @endif
 
+        <x-notifications-modal :notificaions="$notifications" />
+
         <!-- Page Content -->
         <main class="min-h-[90vh]">
             {{ $slot }}

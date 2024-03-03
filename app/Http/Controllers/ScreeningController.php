@@ -82,7 +82,6 @@ class ScreeningController extends Controller
             'date' => 'required',
             'time' => 'required',
         ]);
-
         $date = $validated['date'] . ' ' . $validated['time'];
         $date_now = Carbon::now()->floorHour()->toDateTimeString();
         if ($date_now >= $date) {
@@ -98,14 +97,26 @@ class ScreeningController extends Controller
             ]);
         }
 
+        $seats = $screening->hall->seats()->whereHas('reservations', function ($query) use ($screening) {
+            $query->where('screening_date', $screening->date);
+        })->with('reservations')->get();
+
+        $old_date = $screening->date;
         $screening->update([
             'date' => $date,
         ]);
 
-        Notification::create([
-            'film_hall_id' => $screening->id,
-            'type' => 'reschedule',
-        ]);
+        foreach ($seats as $seat) {
+            $reservation = $seat->reservations->where('screening_date', $old_date)->first();
+            if ($reservation) {
+                $reservation->update(['screening_date' => $date]);
+                Notification::create([
+                    'film_hall_id' => $screening->id,
+                    'type' => 'reschedule',
+                    'user_id' => $reservation->user_id,
+                ]);
+            }
+        }
 
         return back()->with([
             'message' => 'Film rescheduled successfully! Users who bought reservations will be notified.',
@@ -131,13 +142,15 @@ class ScreeningController extends Controller
             if ($reservation) {
                 $reservation->update(['refunded' => true]);
                 event(new ReservationRefunded($reservation));
+                Notification::create([
+                    'film_hall_id' => $screening->id,
+                    'type' => 'cancellation',
+                    'user_id' => $reservation->user_id,
+                ]);
             }
         }
 
-        Notification::create([
-            'film_hall_id' => $screening->id,
-            'type' => 'cancellation',
-        ]);
+
 
         return back()->with([
             'message' => 'Film screening cancelled successfully! Users who bought reservations will be notified and refunded.',

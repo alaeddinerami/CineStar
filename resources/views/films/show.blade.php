@@ -10,6 +10,7 @@
             })
         </script>
     @endif
+
     <div class="w-11/12 mx-auto flex flex-col items-start justify-start mt-8 mb-20 gap-8 text-gray-900">
         <div class="flex items-center flex-wrap">
             <ul class="flex items-center">
@@ -87,8 +88,8 @@
             </div>
             <div class="flex flex-col gap-1">
                 @php
+                    $now = now()->toDateTimeString();
                     $halls_name = $film->halls->groupBy('name');
-                    // dd($halls);
                 @endphp
                 <p class="text-2xl font-semibold my-4">Screenings:</p>
                 @unless (count($halls_name) == 0)

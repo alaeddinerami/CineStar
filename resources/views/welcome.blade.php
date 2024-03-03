@@ -3,6 +3,7 @@
         return $screening->date->format('Y-m-d');
     });
 @endphp
+
 <x-app-layout>
     <div id="indicators-carousel" class="relative w-full" data-carousel="slide">
         <!-- Carousel wrapper -->
