@@ -17,18 +17,36 @@ class FilmController extends Controller
 
     public function index()
     {
-        $films = Film::with('actors','genres','image')->get();
+        $films = Film::with('actors', 'genres', 'image')->get();
         $genres = Genre::all();
         $actors = Actor::all();
-        return view('dashboard.films.index', compact('films','genres','actors'));
+        return view('dashboard.films.index', compact('films', 'genres', 'actors'));
     }
 
-    public function all()
+    public function all(Request $request)
     {
-        $films = Film::with('genres')->get();
-        $genres = Genre::all();
-        return view('films.index', compact('films','genres'));
-    }
+
+        $films = Film::with('image');
+    
+        $search = $request->input('search');
+        if ($search) {
+            $films = $films->where('title', 'like', '%' . $search . '%')
+                ->orWhereHas('genres', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        }
+        $films = $films->paginate(4);
+        
+        return view('films.index', compact('films'));
+}
+    
+
+//     public function search(Request $request)
+// {
+    
+    
+//     return view('films.index', compact('filmss'));
+// }
 
     /**
      * Show the form for creating a new resource.
@@ -45,10 +63,10 @@ class FilmController extends Controller
     {
         //
         $validatedData = $request->validate([
-            'title'=> 'required',
-            'overview'=> 'required',
+            'title' => 'required',
+            'overview' => 'required',
         ]);
-        
+
         $genres = $request['genres'];
         $actors = $request['actors'];
         array_shift($genres);
@@ -59,12 +77,11 @@ class FilmController extends Controller
         $newfilm->actors()->attach($actors);
 
         $this->storeImg($request->file('image'), $newfilm);
-        
+
         return redirect()->back()->with([
             'message' => 'Hall created successfully!',
             'operationSuccessful' => $this->operationSuccessful = true,
         ]);
-
     }
 
     /**
@@ -72,7 +89,10 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-        $film->load('halls');
+        $now = now()->toDateTimeString();
+        $film->load(['halls' => function ($query) use ($now) {
+            $query->where('date', '>', $now)->withPivot('date');
+        }]);
         return view('films.show', compact('film'));
     }
 
@@ -81,8 +101,8 @@ class FilmController extends Controller
      */
     public function edit(Film $film)
     {
-        $genres = Genre::all(); 
-        $actors = Actor::all(); 
+        $genres = Genre::all();
+        $actors = Actor::all();
         dump($actors);
         dump($genres);
         return view('/dashboard/films', compact('film', 'genres', 'actors'));
@@ -94,15 +114,15 @@ class FilmController extends Controller
     public function update(Request $request, Film $film)
     {
         $validatedData = $request->validate([
-            'title'=> 'required',
-            'overview'=> 'required',
+            'title' => 'required',
+            'overview' => 'required',
         ]);
         if (Film::where('title', $validatedData['title'])->where('id', '!=', $film->id)->exists()) {
             return back()->with([
                 'message' => 'Another film name already exists with this name.',
                 'operationSuccessful' => $this->operationSuccessful,
-        ]);
-    }
+            ]);
+        }
         $film->update($validatedData);
 
         $genres = $request['genres'];
@@ -111,7 +131,7 @@ class FilmController extends Controller
         $actors = $request['actors'];
         $film->actors()->sync($actors);
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $this->storeImg($request->file('image'), $film);
             $this->upadateImg($request->file('image'), $film);
         }

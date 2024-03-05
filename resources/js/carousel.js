@@ -6,8 +6,6 @@ import { Carousel } from "flowbite";
 
 let element = document.getElementById("indicators-carousel");
 
-console.log(element);
-
 const options = {
     interval: 3000,
 };

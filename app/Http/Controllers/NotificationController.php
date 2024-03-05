@@ -36,7 +36,11 @@ class NotificationController extends Controller
      */
     public function show(Notification $notification)
     {
-        //
+        $notification->update([
+            'read_at' => now(),
+        ]);
+        $notification->load('filmHall.film', 'filmHall.hall');
+        return view('notifications.show', compact('notification'));
     }
 
     /**

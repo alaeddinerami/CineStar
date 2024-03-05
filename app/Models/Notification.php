@@ -13,4 +13,9 @@ class Notification extends Model
     {
         return $this->belongsTo(FilmHall::class, 'film_hall_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

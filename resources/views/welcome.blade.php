@@ -3,6 +3,7 @@
         return $screening->date->format('Y-m-d');
     });
 @endphp
+
 <x-app-layout>
     <div id="indicators-carousel" class="relative w-full" data-carousel="slide">
         <!-- Carousel wrapper -->
@@ -76,97 +77,103 @@
     </div>
     <div class="w-11/12 ml-9 flex flex-col items-start justify-start my-14 text-gray-900">
         <p class="text-5xl font-semibold my-4">Film Screenings</p>
+        @unless (count($screeningsByDate) == 0)
+            <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
+                    data-tabs-toggle="#default-styled-tab-content"
+                    data-tabs-active-classes="text-purple-600 hover:text-purple-600 border-purple-600 dark:border-purple-500"
+                    data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 border-gray-100 hover:border-gray-300 dark:border-gray-700"
+                    role="tablist">
+                    @foreach ($screeningsByDate as $date => $screenings)
+                        @if ($loop->index < 7)
+                            <li class="me-2" role="presentation">
+                                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ 'day-' . $loop->index }}"
+                                    data-tabs-target="{{ '#day-' . $loop->index . '-content' }}" type="button"
+                                    role="tab" aria-controls="{{ 'day-' . $loop->index }}-content"
+                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                    {{ \Carbon\Carbon::parse($date)->format('l') }}
+                                </button>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
 
-        <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab"
-                data-tabs-toggle="#default-styled-tab-content"
-                data-tabs-active-classes="text-purple-600 hover:text-purple-600 border-purple-600 dark:border-purple-500"
-                data-tabs-inactive-classes="dark:border-transparent text-gray-500 hover:text-gray-600 border-gray-100 hover:border-gray-300 dark:border-gray-700"
-                role="tablist">
+            <div id="default-styled-tab-content">
                 @foreach ($screeningsByDate as $date => $screenings)
                     @if ($loop->index < 7)
-                        <li class="me-2" role="presentation">
-                            <button class="inline-block p-4 border-b-2 rounded-t-lg" id="{{ 'day-' . $loop->index }}"
-                                data-tabs-target="{{ '#day-' . $loop->index . '-content' }}" type="button"
-                                role="tab" aria-controls="{{ 'day-' . $loop->index }}-content"
-                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                {{ \Carbon\Carbon::parse($date)->format('l') }}
-                            </button>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
-        </div>
-
-        <div id="default-styled-tab-content">
-
-            @foreach ($screeningsByDate as $date => $screenings)
-                @if ($loop->index < 7)
-                    <div class="hidden p-4 rounded-lg shadow-xl bg-gray-50 w-[90%] md:w-4/5"
-                        id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
-                        aria-labelledby="{{ 'day-' . $loop->index }}">
-                        <ul class="flex flex-col gap-8">
-                            @foreach ($screenings->groupBy('film_id') as $id => $screenings2)
-                                @php
-                                    $screening = $screenings2->first();
-                                @endphp
-
-                                <li>
-                                    <div class="flex flex-col md:flex-row gap-4">
-                                        @if ($screening->film->image == null)
-                                            <img src="{{ asset('assets/images/poster.jpg') }}"
-                                                class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
-                                                alt="">
-                                        @else
-                                            <img src="{{ asset('storage/' . $film->image->path) }}"
-                                                class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
-                                                alt="">
-                                        @endif
-                                        <div class="flex flex-col justify-between">
-                                            <div class="w-full flex justify-between items-center">
-                                                <div class="flex flex-col gap-1">
-                                                    <a href="{{ route('film.show', $screening->film->id) }}"
-                                                        class="text-3xl hover:text-purple-600 font-semibold">{{ $screening->film->title }}
-                                                    </a>
+                        <div class="hidden p-4 rounded-lg shadow-xl bg-gray-50 w-[90%] md:w-4/5"
+                            id="{{ 'day-' . $loop->index . '-content' }}" role="tabpanel"
+                            aria-labelledby="{{ 'day-' . $loop->index }}">
+                            <ul class="flex flex-col gap-8">
+                                @foreach ($screenings->groupBy('film_id') as $id => $screenings2)
+                                    @php
+                                        $screening = $screenings2->first();
+                                    @endphp
+                                    <li>
+                                        <div class="flex flex-col md:flex-row gap-4">
+                                            @if ($screening->film->image == null)
+                                                <img src="{{ asset('assets/images/poster.jpg') }}"
+                                                    class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
+                                                    alt="">
+                                            @else
+                                                <img src="{{ asset('storage/' . $film->image->path) }}"
+                                                    class="w-full md:w-[25%] h-[80%] inline-block shrink-0 rounded-2xl"
+                                                    alt="">
+                                            @endif
+                                            <div class="flex flex-col justify-between">
+                                                <div class="w-full flex justify-between items-center">
+                                                    <div class="flex flex-col gap-1">
+                                                        <a href="{{ route('film.show', $screening->film->slug) }}"
+                                                            class="text-3xl hover:text-purple-600 font-semibold">{{ $screening->film->title }}
+                                                        </a>
+                                                        <div class="flex items-center gap-1">
+                                                            @foreach ($screening->film->genres as $genre)
+                                                                <p
+                                                                    class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
+                                                                    {{ $genre->name }}</p>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex gap-1">
+                                                        {{-- @foreach ($screening->film->halls as $hall)
+                                                        <p>{{ $hall->name }}</p>
+                                                    @endforeach --}}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-lg font-semibold">Overview:</p>
+                                                    <p class="rounded-md border shadow-md">
+                                                        {{ $screening->film->overview }}
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <p class="text-lg font-semibold">Displays at:</p>
                                                     <div class="flex items-center gap-1">
-                                                        @foreach ($screening->film->genres as $genre)
+                                                        @foreach ($screenings2->groupBy('date') as $date2 => $films)
+                                                            @php
+                                                                $date = explode(' ', $date2);
+                                                            @endphp
                                                             <p
-                                                                class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
-                                                                {{ $genre->name }}</p>
+                                                                class="capitalize cursor-default font-semibold text-sm p-1 px-2 rounded-xl border bg-purple-600 border-purple-500 text-gray-200">
+                                                                {{ $date[1] }}</p>
                                                         @endforeach
                                                     </div>
                                                 </div>
-                                                <div class="flex gap-1">
-                                                    {{-- @foreach ($screening->film->halls as $hall)
-                                                        <p>{{ $hall->name }}</p>
-                                                    @endforeach --}}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p class="text-lg font-semibold">Overview:</p>
-                                                <p class="rounded-md border shadow-md">
-                                                    {{ $screening->film->overview }}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="text-lg font-semibold">Displays at:</p>
-                                                <div class="flex items-center gap-1">
-                                                    @foreach ($screenings2->groupBy('date') as $date2 => $films)
-                                                        <p
-                                                            class="capitalize cursor-default text-sm p-1 rounded-xl border border-gray-500 text-gray-500">
-                                                            {{ $date2 }}</p>
-                                                    @endforeach
-                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-            @endforeach
-        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        @else
+            <div class="p-4 border-t-2 rounded-lg shadow-xl bg-gray-50 w-[90%] md:w-4/5">
+                <p class="w-full text-center text-xl font-semibold">No Film Screenings available.</p>
+            </div>
+        @endunless
     </div>
 
     @vite('resources/js/carousel.js')

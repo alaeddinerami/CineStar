@@ -1,5 +1,16 @@
 <x-guest-layout>
-    <!-- Session Status -->
+    @if (session()->has('message'))
+    @stack('scripts')
+    <script>
+        Swal.fire({
+            title: '{{ session('operationSuccessful') ? 'Success' : 'Error' }}!',
+            icon: '{{ session('operationSuccessful') ? 'success' : 'error' }}',
+            confirmButtonText: 'Ok',
+            html: '{{ session('message') }}'
+        })
+    </script>
+    @endif
+<!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
    
     <form method="POST" action="{{ route('login') }}">

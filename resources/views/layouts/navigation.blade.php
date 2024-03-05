@@ -22,7 +22,11 @@
                 @endhasrole
 
                 {{-- Add nav items that visitor can view below --}}
-
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
+                        {{ __('Films') }}
+                    </x-nav-link>
+                </div>
                 {{-- End nav items --}}
             </div>
 
@@ -32,7 +36,12 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                class="relative inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                @if ($count = $notifications->where('read_at', null)->count() > 0)
+                                    <div
+                                        class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-0 dark:border-gray-900">
+                                        {{ $count }}</div>
+                                @endif
                                 <div>{{ Auth::user()->name }}</div>
 
                                 <div class="ms-1">
@@ -50,6 +59,15 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
+                            @hasrole('member')
+                                <x-dropdown-link :href="route('reservation.index')">
+                                    {{ __('Reservations') }}
+                                </x-dropdown-link>
+                                <x-dropdown-button data-modal-toggle="notifications-modal"
+                                    data-modal-target="notifications-modal" :count="$notifications->where('read_at', null)->count()">
+                                    {{ __('Notifications') }}
+                                </x-dropdown-button>
+                            @endhasrole
 
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -73,7 +91,12 @@
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    class="relative inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                    @if ($count = $notifications->where('read_at', null)->count() > 0)
+                        <div
+                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                            {{ $count }}</div>
+                    @endif
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
                             stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,8 +119,25 @@
             </div>
         @endhasrole
         @hasrole('member')
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link :href="route('reservation.index')" :active="request()->routeIs('reservation.index')">
+                    {{ __('Reservations') }}
+                </x-responsive-nav-link>
+            </div>
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-button data-modal-toggle="notifications-modal" data-modal-target="notifications-modal"
+                    :count="$notifications->where('read_at', null)->count()">
+                    {{ __('Notifications') }}
+                </x-responsive-nav-button>
+            </div>
         @endhasrole
-
+        {{-- no roles needed --}}
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('films.index')" :active="request()->routeIs('films.index')">
+                {{ __('Films') }}
+            </x-responsive-nav-link>
+        </div>
+        {{--  --}}
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             @auth
@@ -110,6 +150,11 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
+                    @hasrole('member')
+                        <x-responsive-nav-link :href="route('reservation.index')">
+                            {{ __('Reservations') }}
+                        </x-responsive-nav-link>
+                    @endhasrole
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">

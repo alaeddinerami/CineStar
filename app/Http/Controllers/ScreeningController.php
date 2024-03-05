@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Film;
-use App\Models\FilmHall;
-use App\Models\Hall;
-use App\Models\Notification;
 use Carbon\Carbon;
+use App\Models\Film;
+use App\Models\Hall;
+use Spatie\Image\Image;
+use App\Models\FilmHall;
+use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Events\ReservationRefunded;
+use Spatie\Browsershot\Browsershot;
 
 class ScreeningController extends Controller
 {
@@ -18,7 +21,7 @@ class ScreeningController extends Controller
     {
         $films = Film::all();
         $halls = Hall::all();
-        $screenings = FilmHall::where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
+        $screenings = FilmHall::where('cancelled', false)->where('date', '>', Carbon::now()->floorHour())->with('film', 'hall')->orderBy('date', 'asc')->get();
         return view("dashboard.screenings.index", compact('films', 'halls', 'screenings'));
     }
 
@@ -79,7 +82,6 @@ class ScreeningController extends Controller
             'date' => 'required',
             'time' => 'required',
         ]);
-
         $date = $validated['date'] . ' ' . $validated['time'];
         $date_now = Carbon::now()->floorHour()->toDateTimeString();
         if ($date_now >= $date) {
@@ -95,14 +97,26 @@ class ScreeningController extends Controller
             ]);
         }
 
+        $seats = $screening->hall->seats()->whereHas('reservations', function ($query) use ($screening) {
+            $query->where('screening_date', $screening->date);
+        })->with('reservations')->get();
+
+        $old_date = $screening->date;
         $screening->update([
             'date' => $date,
         ]);
 
-        Notification::create([
-            'film_hall_id' => $screening->id,
-            'type' => 'reschedule',
-        ]);
+        foreach ($seats as $seat) {
+            $reservation = $seat->reservations->where('screening_date', $old_date)->first();
+            if ($reservation) {
+                $reservation->update(['screening_date' => $date]);
+                Notification::create([
+                    'film_hall_id' => $screening->id,
+                    'type' => 'reschedule',
+                    'user_id' => $reservation->user_id,
+                ]);
+            }
+        }
 
         return back()->with([
             'message' => 'Film rescheduled successfully! Users who bought reservations will be notified.',
@@ -119,11 +133,24 @@ class ScreeningController extends Controller
             $query->where('screening_date', $screening->date);
         })->with('reservations')->get();
 
-        $screening->delete();
+        $screening->update([
+            'cancelled' => true,
+        ]);
 
         foreach ($seats as $seat) {
-            $seat->reservations->first()->update(['refunded' => true]);
+            $reservation = $seat->reservations->where('screening_date', $screening->date)->first();
+            if ($reservation) {
+                $reservation->update(['refunded' => true]);
+                event(new ReservationRefunded($reservation));
+                Notification::create([
+                    'film_hall_id' => $screening->id,
+                    'type' => 'cancellation',
+                    'user_id' => $reservation->user_id,
+                ]);
+            }
         }
+
+
 
         return back()->with([
             'message' => 'Film screening cancelled successfully! Users who bought reservations will be notified and refunded.',

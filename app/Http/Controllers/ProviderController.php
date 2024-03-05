@@ -35,7 +35,10 @@ class ProviderController extends Controller
             return redirect()->route('welcome');
 
         } catch (Exception $th) {
-            echo $th->getMessage();
+            return redirect()->route('login')->with([
+                'message' => 'Error while logging in.',
+                'operationSuccessful' => $this->operationSuccessful,
+            ]);
         }
     }
     
